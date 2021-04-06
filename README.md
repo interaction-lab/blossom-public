@@ -1,20 +1,18 @@
-# Blossom
+# Blossom Package
+
+This python package includes all the basics necessary to run your
+Blossom robot to make it perform various gestures and sequences.
+
+##About Blossom
 
 Blossom is an open-hardware, open-source tensile robot that you can handcraft and accessorize to your liking. You can read more about the project in [Evan Ackerman's IEEE Spectrum article](https://spectrum.ieee.org/automaton/robotics/home-robots/blossom-a-creative-handmade-approach-to-social-robotics-from-cornell-and-google).
+
+You can visit the Blossom github repository at: https://github.com/hrc2/blossom-public/
 
 Here are two examples of Blossom robots:
 
 <img src="http://guyhoffman.com/wp-content/uploads/2017/08/blossom-bunny-corner-e1502812175733-300x189.jpg" width="300">
 <img src="http://guyhoffman.com/wp-content/uploads/2017/08/blossom-jellyfish-768x606.jpg" width="300" >
-
-**For any questions (assembly or software related), [please check/make public issues](https://github.com/hrc2/blossom-public/issues).**
-
-## Get repo
-In a terminal, clone this repo
-```
-git clone https://github.com/hrc2/blossom-public/
-```
-_Download through a package will be added in the future._
 
 ## Setup Software Dependencies
 
@@ -40,11 +38,11 @@ source blossom_venv/bin/activate
 ### General Setup
 
 
-_Ubuntu_: You may need to run 
+_Ubuntu_: You may need to run
 
 ```
 sudo apt-get install build-essential libssl-dev libffi-dev python3-dev`  
-``` 
+```
 and
 ```
 pip install wheel
@@ -78,21 +76,14 @@ _Installation will take longer on a Raspberry Pi, and you may need additional de
 sudo apt-get install xvfb
 ```
 
-
-## Building Blossom
-
-To build your own Blossom, check out the [Build Guide](https://github.com/hrc2/blossom-public/wiki). The rest of this document will teach you how to set up the software to run the robot.
-
-_Note that you need to have the basic software set up to correctly build Blossom_
-
-## Running Blossom 
+## Running Blossom
 
 ### CLI
 To start the CLI, plug Blossom in and run
 ```
-python start.py 
+python start.py
 ```
-_Error: could not open port. You may need to run `sudo chmod 777 <the name of the port>.` 
+_Error: could not open port. You may need to run `sudo chmod 777 <the name of the port>.`
 Ex: `sudo chmod 777 /dev/ttyACM0`
 
 
@@ -104,7 +95,7 @@ Additional flags:
 ```
 _Linux may default to a loopback IP (`127.0.1.1`); in this case you **must** specify the IP address using `-i`._
 
-For example, to make Blossom nod with the `yes` sequence, type: 
+For example, to make Blossom nod with the `yes` sequence, type:
 
 `s` -> Enter -> `yes`
 
@@ -116,8 +107,8 @@ Available commands:
 
 ## Interfaces
 
-The startup prompt will say 
-    
+The startup prompt will say
+
     +-------------------+
     |     IP ADDRESS    |
     +-------------------+
@@ -125,43 +116,3 @@ The startup prompt will say
     +-------------------+
 
 The IP address in this case is `10.132.3.171`. **Your IP address will be different from 10.132.3.171**
-
-### GUI
-The GUI _should_ be accessible via `localhost:8000` or `*IP address:8000` after starting up the CLI if `-b` was **not** specified. Otherwise, the CLI should print a message stating the server url.
-
-### Mobile app
-
-**Installation**
-
-Detailed instructions are available in [BlossomApp](https://github.com/hrc2/blossom-public/tree/master/BlossomApp)
-
-**Controlling the robot**
-
-This allows you to control the robot's orientation (pitch, yaw, roll) by moving the phone and use sliders for the height.
-
-Enter the IP address into the `Host` field and toggle `Control robot`. By default, the robot will copy the phone's orientation identically, i.e. the robot should be facing _away_ from you. To control the robot as it's facing you, toggle `Mirror` to be `On` and the robot will gaze at the top end of the phone (like a cat looking at a laser pointer, emitting from the top of the phone).
-
-### Build reactions to videos
-
-Open a new terminal and the video editor by typing: `xdg-open blossom_blockly/index.html` (Ubuntu) or `open blossom_blockly/index.html` (Mac), then hit “Enter.” The video editor should open in a new browser or tab.
-
-Type in the IP address into the editor and press `Update IP Address`.
-
-To update the video, paste the URL into the field and click `Update Video`.  
-_Some videos have restrictions and cannot play._
-
-**Choreograph**  
-In the left side of the video editor screen, use a Gesture block and input the starting time and gesture name.  
-
-Blocks must be connected to the initial block together for them to trigger gestures.   
-You can create new gestures with the __mobile app__ and use them in the editor video with `Reload Gestures`.
-
-Check `Loop` box to repeat the movement indefinitely until the next gesture. 
-
-Adjust the playback speed, exaggeration (amplitude) and posture (lean forwards/backwards): 
-
- 	-Choose and Adjustment block and add it to the gesture blocks in the "Adjustments" part  
-	-Enter the multiplier in the “multiply by” block.  
-	-Connect the multiplier block to the Adjustment block  
-	-Only one adjustment can be used at a time.  
-

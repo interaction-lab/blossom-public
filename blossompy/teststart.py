@@ -4,6 +4,8 @@ Start up the blossom webserver, CLI client, and web client.
 
 # make sure that prints will be supported
 from __future__ import print_function
+
+from sequencerobot import SequenceRobot
 import sys
 import yaml
 import argparse
@@ -12,7 +14,6 @@ import shutil
 import signal
 from config import RobotConfig
 from src import robot, sequence
-from sequencerobot import SequenceRobot
 import re
 from serial.serialutil import SerialException
 from pypot.dynamixel.controller import DxlError

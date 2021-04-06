@@ -1,0 +1,13 @@
+#constants.yaml
+#Contains constants for robot control that are used in start.py
+
+# speed factor to playback sequences
+speed: 1.0
+# amplitude factor
+amp: 1.0
+# posture factor
+post: 0.0
+#br
+br: 57600
+# CLI prompt
+prompt: (l)ist sequences / (s)equence play / (q)uit:
