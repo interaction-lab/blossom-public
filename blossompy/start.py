@@ -36,18 +36,22 @@ def start_cli(robot):
     """
     Start CLI as a thread
     """
+    print("cli started")
     t = threading.Thread(target=run_cli, args=[master_robot])
     t.daemon = True
     t.start()
+    print("\ncli started 2")
 
 
 def run_cli(robot):
     """
     Handle CLI inputs indefinitely
     """
+    print("\ncli running")
     while(1):
+        print("cli in while loop")
         # get command string
-        cmd_str = input(Constants.prompt)
+        cmd_str = input("put a command here")
         cmd_string = re.split('/| ', cmd_str)
         cmd = cmd_string[0]
 
@@ -58,6 +62,8 @@ def run_cli(robot):
 
         # handle the command and arguments
         handle_input(master_robot, cmd, args)
+        print("handle_input called")
+    print("\ncli not running")
 
 
 def handle_quit():
@@ -349,8 +355,9 @@ def main(args):
 
     # start CLI
     start_cli(master_robot)
-    # start server
-    start_server(args.host, args.port, args.browser_disable)
+    while True:
+        time.sleep(1)
+        
 
 
 def safe_init_robot(name, config):

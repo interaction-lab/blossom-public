@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import os
+import threading
 import sys
 import subprocess
 import argparse
@@ -10,10 +11,8 @@ import signal
 from config import RobotConfig
 from src import robot, sequence
 import yaml
-import threading
 
 loaded_seq = []
-
 
 class SequenceRobot(robot.Robot):
     """
@@ -24,7 +23,7 @@ class SequenceRobot(robot.Robot):
     def __init__(self, name, config):
         # init robot
 
-        br = 57600
+        br=57600
         super(SequenceRobot, self).__init__(config, br, name)
         # save configuration (list of motors for PyPot)
         self.config = config
@@ -71,7 +70,7 @@ class SequenceRobot(robot.Robot):
                 # go through all sequence
                 for s in os.listdir(subseq_dir):
                     # is sequence, load
-                    seq_name = "%s/%s" % (subseq_dir, s)
+                    seq_name = "%s/%s"%(subseq_dir,s)
                     if (s[-5:] == '.json' and seq_name not in loaded_seq):
                         # print("Loading {}".format(s))
                         self.load_sequence(seq_name)
@@ -82,7 +81,7 @@ class SequenceRobot(robot.Robot):
         timeMap = [None] * len(keys)
         for i in range(0, len(keys)):
             frameLst = vals[i].frames
-            if len(frameLst) != 0:
+            if len(frameLst)!= 0:
                 timeAmnt = frameLst[-1].millis
                 timeMap[i] = [keys[i], str(timeAmnt / 1000)]
         return timeMap
@@ -113,7 +112,7 @@ class SequenceRobot(robot.Robot):
 
         # start playback thread
         self.seq_thread = robot.sequence.SequencePrimitive(
-            self, seq, self.seq_stop, speed=self.speed, amp=self.amp, post=self.post)
+            self, seq, self.seq_stop, speed=speed, amp=amp, post=post)
         self.seq_thread.start()
 
         # return thread
