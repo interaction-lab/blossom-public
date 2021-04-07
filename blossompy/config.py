@@ -111,11 +111,11 @@ class RobotConfig(object):
                 print("No ports available")
                 sys.exit(1)
             try:
-                if (names[0]!='blossom' and names[0]!='vyo'):
+                if (names[0] != 'blossom' and names[0] != 'vyo'):
                     dxl_io = pd.Dxl320IO(port)
                 else:
-                    if (names[0]=='vyo'):
-                        dxl_io = pd.DxlIO(port,57600)
+                    if (names[0] == 'vyo'):
+                        dxl_io = pd.DxlIO(port, 57600)
                     else:
                         dxl_io = pd.DxlIO(port)
                 scanned_ids = dxl_io.scan(range(20))
@@ -131,7 +131,7 @@ class RobotConfig(object):
                 scanned_ids = []
 
             # print found motors
-            if (len(scanned_ids)==0):
+            if (len(scanned_ids) == 0):
                 print("No motors found on %s" % port)
                 continue
             else:
@@ -152,7 +152,7 @@ class RobotConfig(object):
                 if configs[i] not in used_configs and valid_port:
                     controller = list(config['controllers'].keys())[0]
                     config['controllers'][controller]['port'] = port
-                    used_configs.append(configs[i]) 
+                    used_configs.append(configs[i])
                     break
             else:
                 print("No robot found for port", port)

@@ -32,6 +32,7 @@ robots = []
 CLI Code
 '''
 
+
 def start_cli(robot):
     """
     Start CLI as a thread
@@ -87,7 +88,9 @@ def handle_quit():
     os.kill(os.getpid(), signal.SIGTERM)
 
 
-last_cmd,last_args = 'rand',[]
+last_cmd, last_args = 'rand', []
+
+
 def handle_input(robot, cmd, args=[]):
     """
     handle CLI input
@@ -184,10 +187,10 @@ def handle_input(robot, cmd, args=[]):
     elif cmd == 'l' or cmd == 'ls':
         # remove asterisk (terminal holdover)
         if args:
-            args[0] = args[0].replace('*','')
+            args[0] = args[0].replace('*', '')
         for seq_name in robot.seq_list.keys():
             # skip if argument is not in the current sequence name
-            if args and args[0]!=seq_name[:len(args[0])]:
+            if args and args[0] != seq_name[:len(args[0])]:
                 continue
             print(seq_name)
 
@@ -235,14 +238,14 @@ def handle_input(robot, cmd, args=[]):
             except KeyboardInterrupt:
                 break
 
-    elif cmd=='':
-        handle_input(master_robot,last_cmd,last_args)
+    elif cmd == '':
+        handle_input(master_robot, last_cmd, last_args)
         return
     # directly call a sequence (skip 's')
     elif cmd in robot.seq_list.keys():
-        args=[cmd]
-        cmd='s'
-        handle_input(master_robot,cmd,args)
+        args = [cmd]
+        cmd = 's'
+        handle_input(master_robot, cmd, args)
     # directly call a random sequence by partial name match
     elif [cmd in seq_name for seq_name in robot.seq_list.keys()]:
         # print(args[0])
@@ -251,11 +254,11 @@ def handle_input(robot, cmd, args=[]):
         else:
             seq_list = [seq_name for seq_name in robot.seq_list.keys() if cmd in seq_name]
 
-        if len(seq_list)==0:
-            print("No sequences matching name: %s"%(cmd))
+        if len(seq_list) == 0:
+            print("No sequences matching name: %s" % (cmd))
             return
-        handle_input(master_robot,'s',[random.choice(seq_list)])
-        cmd=cmd
+        handle_input(master_robot, 's', [random.choice(seq_list)])
+        cmd = cmd
 
     # elif cmd == 'c':
     #     robot.calibrate()
@@ -263,7 +266,8 @@ def handle_input(robot, cmd, args=[]):
     else:
         print("Invalid input")
         return
-    last_cmd,last_args=cmd,args
+    last_cmd, last_args = cmd, args
+
 
 def record(robot):
     """
@@ -323,6 +327,7 @@ def store_gesture(name, sequence, label=""):
 Main Code
 '''
 
+
 def main(args):
     """
     Start robots, start up server, handle CLI
@@ -341,7 +346,6 @@ def main(args):
     robots.append(master_robot)
 
     master_robot.reset_position()
-
 
     # start CLI
     start_cli(master_robot)
@@ -388,8 +392,8 @@ def parse_args(args):
                         help='Name of the robot.', default=["woody"])
     parser.add_argument('--port', '-p', type=int,
                         help='Port to start server on.', default=8000)
-    parser.add_argument('--host', '-i', type=str, help='IP address of webserver',
-                        default=srvr.get_ip_address())
+    # parser.add_argument('--host', '-i', type=str, help='IP address of webserver',
+    #                     default=srvr.get_ip_address())
     parser.add_argument('--browser-disable', '-b',
                         help='prevent a browser window from opening with the blossom UI',
                         action='store_true')

@@ -7,3 +7,4 @@ python_jwt
 pycrypto==2.6.1
 prettytable
 flask_cors
+PyYAML
