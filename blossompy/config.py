@@ -93,6 +93,8 @@ class RobotConfig(object):
         """
         assign unique ports to a list of names for as many ports as we have available
         """
+        print("get config for: ", names)
+        print("available config include: ", self.configs)
         # test config for debugging without a robot
         if (names[0] == 'test'):
             return {names[0]: self.configs[names[0]]}
@@ -101,6 +103,7 @@ class RobotConfig(object):
         configs = []
         for name in names:
             if name in self.configs:
+                print("found config for: ", name)
                 configs.append((name, self.configs[name]))
         # print(configs)
 
@@ -112,13 +115,22 @@ class RobotConfig(object):
                 sys.exit(1)
             try:
                 if (names[0] != 'blossom' and names[0] != 'vyo'):
+                    print("dxl_io call to port: ", port)
                     dxl_io = pd.Dxl320IO(port)
+                    print("dxl_io: ", dxl_io)
                 else:
                     if (names[0] == 'vyo'):
                         dxl_io = pd.DxlIO(port, 57600)
                     else:
                         dxl_io = pd.DxlIO(port)
-                scanned_ids = dxl_io.scan(range(20))
+                print("scanning port")
+                try:
+                    scanned_ids = dxl_io.scan(range(20))
+                    print("scanned_ids: ", scanned_ids)
+                except Exception as e:
+                    scanned_ids = dxl_io.scan(range(20))
+                    print("scanned_ids: ", scanned_ids)
+                    
             # handle unopenable serial port
             except SerialException as e:
                 print(e)
