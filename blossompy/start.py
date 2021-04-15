@@ -51,7 +51,7 @@ def run_cli(robot):
     while(1):
         print("cli in while loop")
         # get command string
-        cmd_str = input("put a command here")
+        cmd_str = input("Enter a command (use 'l' for a list): ")
         cmd_string = re.split('/| ', cmd_str)
         cmd = cmd_string[0]
 
@@ -83,14 +83,6 @@ def handle_quit():
         bot.robot.close()
     print("Bye!")
     # TODO: Figure out how to kill flask gracefully
-    if yarn_process:
-        try:
-            os.killpg(os.getpgid(yarn_process.pid), signal.SIGTERM)
-        except Exception:
-            print("Caught unknown exception (please change the except statement)")
-            print("Couldn't kill yarn process")
-            pass
-    os.kill(os.getpid(), signal.SIGTERM)
 
 
 last_cmd, last_args = 'rand', []
@@ -357,7 +349,7 @@ def main(args):
     start_cli(master_robot)
     while True:
         time.sleep(1)
-        
+
 
 
 def safe_init_robot(name, config):

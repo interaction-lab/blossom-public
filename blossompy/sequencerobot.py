@@ -1,7 +1,6 @@
 from __future__ import print_function
 
 import os
-import threading
 import sys
 import subprocess
 import argparse
@@ -11,6 +10,7 @@ import signal
 from config import RobotConfig
 from src import robot, sequence
 import yaml
+import threading
 
 loaded_seq = []
 
