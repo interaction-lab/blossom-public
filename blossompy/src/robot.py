@@ -69,7 +69,7 @@ class Robot(object):
         # motor doesn't exist or otherwise not able to move
         # TODO: handle this better
         except AttributeError:
-            # print("Could not move: " + str(motor_pos))
+            print("Could not move: " + str(motor_pos))
             pass
 
     def get_motor_pos(self):
