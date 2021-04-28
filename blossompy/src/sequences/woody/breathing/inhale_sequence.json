@@ -1,0 +1,56 @@
+{
+  "animation": "inhale",
+  "frame_list": [
+    {
+      "positions": [
+        {
+          "dof": "tower_1",
+          "pos": 5.53007909481035
+        },
+        {
+          "dof": "tower_3",
+          "pos": 5.523007909481035
+        },
+        {
+          "dof": "tower_2",
+          "pos": 5.523007909481035
+        },
+        {
+          "dof": "base",
+          "pos": 3.049120351043849
+        },
+        {
+          "dof": "ears",
+          "pos": 5.34
+        }
+      ],
+      "millis": 0.0
+    },
+    {
+      "positions": [
+        {
+          "dof": "tower_1",
+          "pos": 2.27594928527165
+        },
+        {
+          "dof": "tower_3",
+          "pos": 2.27594928527165
+        },
+        {
+          "dof": "tower_2",
+          "pos": 2.27594928527165
+        },
+        {
+          "dof": "base",
+          "pos": 3.049120351043849
+        },
+        {
+          "dof": "ears",
+          "pos": 5.34
+        }
+      ],
+      "millis": 1000.0
+    }
+  ],
+  "label": "none"
+}
