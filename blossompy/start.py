@@ -26,32 +26,18 @@ random.seed(time.time())
 
 master_robot = None
 robots = []
-
-'''
-CLI Code
-'''
-
-
-def start_cli(robot):
-    """
-    Start CLI as a thread
-    """
-    print("cli started")
-    t = threading.Thread(target=run_cli, args=[master_robot])
-    t.daemon = True
-    t.start()
-    print("\ncli started 2")
+last_cmd, last_args = 'rand', []
 
 
 def run_cli(robot):
     """
     Handle CLI inputs indefinitely
+    Will split off / or | and keep subsequent parts as a list of args
     """
     print("\ncli running")
     while(1):
-        print("cli in while loop")
         # get command string
-        cmd_str = input("Enter a command (use 'l' for a list): ")
+        cmd_str = input("Enter a command ('h' for help or 'l' for list of sequences): \n>>>")
         cmd_string = re.split('/| ', cmd_str)
         cmd = cmd_string[0]
 
@@ -69,9 +55,6 @@ def handle_quit():
     """
     Close the robot object and clean up any temporary files.
     Manually kill the flask server because there isn't an obvious way to do so gracefully.
-
-    Raises:
-        ???: Occurs when yarn failed to start but yarn_process was still set to true.
     """
     print("Exiting...")
     for bot in robots:
@@ -81,27 +64,19 @@ def handle_quit():
             shutil.rmtree(tmp_dir)
         bot.robot.close()
     print("Bye!")
-    # TODO: Figure out how to kill flask gracefully
-
-
-last_cmd, last_args = 'rand', []
 
 
 def handle_input(robot, cmd, args=[]):
     """
     handle CLI input
 
+    # TODO: What is the point of s?
+
     Args:
         robot: the robot affected by the given command
         cmd: a robot command
         args: additional args for the command
     """
-    # manipulate the global speed and amplitude vars
-    # global speed
-    # global amp
-    # global post
-    # print(cmd, args)
-    # separator between sequence and idler
     global last_cmd, last_args
     idle_sep = '='
     # play sequence
@@ -136,14 +111,6 @@ def handle_input(robot, cmd, args=[]):
         if (seq == 'calm' or seq == 'slowlook' or seq == 'sideside'):
             idle_seq = seq
 
-        # speed = 1.0
-        # amp = 1.0
-        # post = 0.0
-
-        # if (len(args)>=2) : speed = args[1]
-        # if (len(args)>=3) : amp = args[2]
-        # if (len(args)>=4) : post = args[3]
-
         # play the sequence if it exists
         if seq in robot.seq_list:
             # print("Playing sequence: %s"%(args[0]))
@@ -152,6 +119,7 @@ def handle_input(robot, cmd, args=[]):
                 if not bot.seq_stop:
                     bot.seq_stop = threading.Event()
                 bot.seq_stop.set()
+                print(seq)
                 seq_thread = bot.play_recording(seq, idler=False)
             # go into idler
             if (idle_seq != ''):
@@ -169,19 +137,12 @@ def handle_input(robot, cmd, args=[]):
             print("Unknown sequence name:", seq)
             return
 
-    # record sequence
-    # elif cmd == 'r':
-    #     record(robot)
-    #     input("Press 'enter' to stop recording")
-    #     stop_record(robot, input("Seq name: "))
-
     # reload gestures
     elif cmd == 'r':
         master_robot.load_seq()
 
     # list and print sequences (only for the first attached robot)
     elif cmd == 'l' or cmd == 'ls':
-        # remove asterisk (terminal holdover)
         if args:
             args[0] = args[0].replace('*', '')
         for seq_name in robot.seq_list.keys():
@@ -209,22 +170,44 @@ def handle_input(robot, cmd, args=[]):
             else:
                 bot.goto_position({args[0]: float(args[1])}, 0, True)
 
-    # adjust speed (0.5 to 2.0)
+    # adjust speed 
     elif cmd == 'e':
         for bot in robots:
-            bot.speed = float(raw_input('Speed factor: '))
+            bot.speed = float(input('Speed factor [range: (0.5 to 2.0)]: '))
     # adjust amplitude (0.5 to 2.0)
     elif cmd == 'a':
         for bot in robots:
-            bot.amp = float(raw_input('Amplitude factor: '))
+            bot.amp = float(input('Amplitude factor [range: (0.5 to 2.0)]: '))
     # adjust posture (-150 to 150)
     elif cmd == 'p':
         for bot in robots:
-            bot.post = float(raw_input('Posture factor: '))
+            bot.post = float(input('Posture factor [range: (-150 to 150)]: '))
 
     # help
     elif cmd == 'h':
-        exec('help(' + input('Help: ') + ')')
+        print(
+            "Possible cmd line arguments include:" +
+            "\nPlay an action:" +
+            "\n\t Play a random action: rand" +
+            "\n\t Play a sequence: s" +
+            "\n" +
+            "\nMove individual motors: m" +
+            "\n" +
+            "\nReload gestures from json sequences: r" +
+            "\n" +
+            "\nAdjust Parameters:" +
+            "\n\t Adjust speed: e" +
+            "\n\t Adjust amplitude: a" +
+            "\n\t Adjust posture: p" +
+            "\n" +
+            "\nExec python command: man" +
+            "\n" +
+            "\nList available gestures: l or ls" +
+            "\n" +
+            "\nQuit: q" +
+            "\n" +
+            "\nEnter without a cmd to replay the last thing"
+        )
 
     # manual control
     elif cmd == 'man':
@@ -237,6 +220,7 @@ def handle_input(robot, cmd, args=[]):
     elif cmd == '':
         handle_input(master_robot, last_cmd, last_args)
         return
+
     # directly call a sequence (skip 's')
     elif cmd in robot.seq_list.keys():
         args = [cmd]
@@ -265,64 +249,6 @@ def handle_input(robot, cmd, args=[]):
     last_cmd, last_args = cmd, args
 
 
-def record(robot):
-    """
-    Start new recording session on the robot
-    """
-    # stop recording if one is happening
-    if not robot.rec_stop:
-        robot.rec_stop = threading.Event()
-    # start recording thread
-    robot.rec_stop.set()
-    robot.start_recording()
-
-
-def stop_record(robot, seq_name=""):
-    """
-    Stop recording
-    args:
-        robot       the robot under which to save the sequence
-        seq_name    the name of the sequence
-    returns:
-        the name of the saved sequence
-    """
-    # stop recording
-    robot.rec_stop.set()
-
-    # if provided, save sequence name
-    if seq_name:
-        seq = robot.rec_thread.save_rec(seq_name, robots=robots)
-        store_gesture(seq_name, seq)
-    # otherwise, give it ranodm remporary name
-    else:
-        seq_name = uuid.uuid4().hex
-        robot.rec_thread.save_rec(seq_name, robots=robots, tmp=True)
-
-    # return name of saved sequence
-    return seq_name
-
-
-def store_gesture(name, sequence, label=""):
-    """
-    Save a sequence to GCP datastore
-    args:
-        name: the name of the sequence
-        sequence: the sequence dict
-        label: a label for the sequence
-    """
-    url = "https://classification-service-dot-blossom-gestures.appspot.com/gesture"
-    payload = {
-        "name": name,
-        "sequence": sequence,
-        "label": label,
-    }
-    requests.post(url, json=payload)
-
-
-'''
-Main Code
-'''
-
 
 def main(args):
     """
@@ -334,9 +260,9 @@ def main(args):
 
     # use first name as master
     configs = RobotConfig().get_configs(args.names)
-    print(configs)
     master_robot = safe_init_robot(args.names[0], configs[args.names[0]])
     configs.pop(args.names[0])
+
     # start robots
     robots = [safe_init_robot(name, config)
               for name, config in configs.items()]
@@ -345,7 +271,10 @@ def main(args):
     master_robot.reset_position()
 
     # start CLI
-    start_cli(master_robot)
+    t = threading.Thread(target=run_cli, args=[master_robot])
+    t.daemon = True
+    t.start()
+
     while True:
         time.sleep(1)
 
@@ -388,15 +317,6 @@ def parse_args(args):
     parser = argparse.ArgumentParser()
     parser.add_argument('--names', '-n', type=str, nargs='+',
                         help='Name of the robot.', default=["woody"])
-    parser.add_argument('--port', '-p', type=int,
-                        help='Port to start server on.', default=8000)
-    # parser.add_argument('--host', '-i', type=str, help='IP address of webserver',
-    #                     default=srvr.get_ip_address())
-    parser.add_argument('--browser-disable', '-b',
-                        help='prevent a browser window from opening with the blossom UI',
-                        action='store_true')
-    parser.add_argument('--list-robots', '-l',
-                        help='list all robot names', action='store_true')
     return parser.parse_args(args)
 
 

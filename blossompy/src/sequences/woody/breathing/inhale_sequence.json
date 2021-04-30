@@ -30,15 +30,15 @@
       "positions": [
         {
           "dof": "tower_1",
-          "pos": 0
+          "pos": 3.5
         },
         {
           "dof": "tower_3",
-          "pos": 0
+          "pos": 3.5
         },
         {
           "dof": "tower_2",
-          "pos": 0
+          "pos": 3.5
         },
         {
           "dof": "base",
@@ -49,7 +49,82 @@
           "pos": 5.34
         }
       ],
-      "millis": 2000.0
+      "millis": 200.0
+    },
+    {
+      "positions": [
+        {
+          "dof": "tower_1",
+          "pos": 4.5
+        },
+        {
+          "dof": "tower_3",
+          "pos": 4.5
+        },
+        {
+          "dof": "tower_2",
+          "pos": 4.5
+        },
+        {
+          "dof": "base",
+          "pos": 3.9049120351043849
+        },
+        {
+          "dof": "ears",
+          "pos": 5.34
+        }
+      ],
+      "millis": 600.0
+    },
+    {
+      "positions": [
+        {
+          "dof": "tower_1",
+          "pos": 1.5
+        },
+        {
+          "dof": "tower_3",
+          "pos": 4.5
+        },
+        {
+          "dof": "tower_2",
+          "pos": 1.5
+        },
+        {
+          "dof": "base",
+          "pos": 3.049120351043849
+        },
+        {
+          "dof": "ears",
+          "pos": 5.34
+        }
+      ],
+      "millis": 1000.0
+    },
+    {
+      "positions": [
+        {
+          "dof": "tower_1",
+          "pos": 1.5
+        },
+        {
+          "dof": "tower_3",
+          "pos": 4.5
+        },
+        {
+          "dof": "tower_2",
+          "pos": 1.5
+        },
+        {
+          "dof": "base",
+          "pos": 3.049120351043849
+        },
+        {
+          "dof": "ears",
+          "pos": 5.34
+        }
+      ],
+      "millis": 1000.0
     }
   ],
   "label": "none"
