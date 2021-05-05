@@ -48,7 +48,7 @@ def run_cli(robot):
     while(1):
         # get command string
         print("\n\n\n")
-        cmd_str = raw_input("Click E for Exhale, I for Inhale.\nClick 1, 2, or 3 for speed settings (3 is fastest): ")
+        cmd_str = raw_input("Enter E for Exhale, I for Inhale.\nEnter 1, 2, or 3 for speed settings (3 is fastest): ")
         cmd = cmd_str
 
         # parse to get argument
