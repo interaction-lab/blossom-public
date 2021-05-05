@@ -37,7 +37,7 @@ def run_cli(robot):
     print("\ncli running")
     while(1):
         # get command string
-        cmd_str = input("Enter a command ('h' for help or 'l' for list of sequences): \n>>>")
+        cmd_str = raw_input("Enter a command ('h' for help or 'l' for list of sequences): \n>>>")
         cmd_string = re.split('/| ', cmd_str)
         cmd = cmd_string[0]
 
@@ -170,7 +170,7 @@ def handle_input(robot, cmd, args=[]):
             else:
                 bot.goto_position({args[0]: float(args[1])}, 0, True)
 
-    # adjust speed 
+    # adjust speed
     elif cmd == 'e':
         for bot in robots:
             bot.speed = float(input('Speed factor [range: (0.5 to 2.0)]: '))

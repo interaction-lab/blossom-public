@@ -108,7 +108,7 @@ def handle_input(robot, cmd, args=[]):
         return
     if cmd == "3":
         for bot in robots:
-            bot.speed = float(1.5)
+            bot.speed = float(1.75)
         return
 
     global last_cmd, last_args

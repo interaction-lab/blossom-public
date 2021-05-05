@@ -70,7 +70,7 @@ class Robot(object):
         # TODO: handle this better
         except AttributeError as e:
             print("Could not move: " + str(motor_pos))
-            print(f"Error was: {e}")
+            ##print(f"Error was: {e}")
             pass
 
     def get_motor_pos(self):

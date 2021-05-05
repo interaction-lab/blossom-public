@@ -2,35 +2,6 @@
   "animation": "exhale",
   "frame_list": [
     {
-      "millis": 0,
-      "positions": [
-          {
-              "dof": "tower_1",
-              "pos": "5.00"
-          },
-          {
-              "dof": "tower_2",
-              "pos": "5.00"
-          },
-          {
-              "dof": "tower_3",
-              "pos": "5.00"
-          },
-          {
-              "dof": "base",
-              "pos": "3.00"
-          },
-          {
-              "dof": "arms",
-              "pos": "5.00"
-          },
-          {
-              "dof": "ears",
-              "pos": "1.00"
-          }
-      ]
-    },
-    {
       "positions": [
         {
           "dof": "tower_1",
@@ -53,7 +24,7 @@
           "pos": 5.34
         }
       ],
-      "millis": 2000.0
+      "millis": 0
     },
     {
       "positions": [
@@ -78,7 +49,7 @@
           "pos": 5.34
         }
       ],
-      "millis": 30000.0
+      "millis": 3000.0
     }
   ],
   "label": "none"
