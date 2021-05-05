@@ -68,8 +68,9 @@ class Robot(object):
             self.robot.goto_position(motor_pos, duration=delay, wait=wait)
         # motor doesn't exist or otherwise not able to move
         # TODO: handle this better
-        except AttributeError:
+        except AttributeError as e:
             print("Could not move: " + str(motor_pos))
+            print(f"Error was: {e}")
             pass
 
     def get_motor_pos(self):
