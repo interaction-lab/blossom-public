@@ -7,12 +7,13 @@ from __future__ import print_function
 import sys
 import yaml
 import argparse
+import string
 import os
 import shutil
 import signal
 from config import RobotConfig
 from src import robot, sequence
-from sequencerobot import SequenceRobot
+from src import sequencerobot
 import re
 from serial.serialutil import SerialException
 from pypot.dynamixel.controller import DxlError
@@ -36,23 +37,34 @@ def start_cli(robot):
     """
     Start CLI as a thread
     """
-    print("cli started")
     t = threading.Thread(target=run_cli, args=[master_robot])
     t.daemon = True
     t.start()
-    print("\ncli started 2")
-
 
 def run_cli(robot):
     """
     Handle CLI inputs indefinitely
     """
-    while(1):
-        # handle the command and arguments
-        handle_input(master_robot, 'm')
-        print(master_robot.motors)
-    print("\ncli not running")
+    cmd = "reset"
+    args = None
+    handle_input(master_robot, cmd, args)
+    time.sleep(3);
 
+    for i in range(0,8):
+        # get command string
+        args = None
+        if(i%2 == 0):
+            cmd = "I";
+            print("\ninhaling . . .\n")
+            handle_input(master_robot, cmd, args)
+        else:
+            cmd = "E";
+            print("\nexhaling . . .\n")
+            handle_input(master_robot, cmd, args)
+        time.sleep(8);
+        # parse to get argument
+    print("\nFinished! Thanks for trying Blossom Breathing.")
+        # handle the command and arguments
 
 def handle_quit():
     """
@@ -91,24 +103,102 @@ def handle_input(robot, cmd, args=[]):
     # global post
     # print(cmd, args)
     # separator between sequence and idler
+    if cmd == "E":
+        cmd = 'exhale'
+    elif cmd == "I":
+        cmd = 'inhale'
     global last_cmd, last_args
     idle_sep = '='
+    # play sequence
 
-    ###?????###
-    if cmd == 'm':
+    if cmd == 's' or cmd == 'rand':
+        # default to not idling
+        # idler = False
+        # get sequence if not given
+        if not args:
+            args = ['']
+            # args[0] = raw_input('Sequence: ')
+            seq = input('Sequence: ')
+        else:
+            seq = args[0]
+        # check if should be idler
+        # elif (args[0] == 'idle'):
+        #     args[0] = args[1]
+        #     idler = True
+        idle_seq = ''
+        if (idle_sep in seq):
+            (seq, idle_seq) = re.split(idle_sep + '| ', seq)
+        # speed = 1.0
+        # amp = 1.0
+        # post = 0.0
+
+        # if (len(args)>=2) : speed = args[1]
+        # if (len(args)>=3) : amp = args[2]
+        # if (len(args)>=4) : post = args[3]
+
+        # play the sequence if it exists
+        if seq in robot.seq_list:
+            # print("Playing sequence: %s"%(args[0]))
+            # iterate through all robots
+            for bot in robots:
+                if not bot.seq_stop:
+                    bot.seq_stop = threading.Event()
+                bot.seq_stop.set()
+                seq_thread = bot.play_recording(seq, idler=False)
+            # go into idler
+            if (idle_seq != ''):
+                while (seq_thread.is_alive()):
+                    # sleep necessary to smooth motion
+                    time.sleep(0.1)
+                    continue
+                for bot in robots:
+                    if not bot.seq_stop:
+                        bot.seq_stop = threading.Event()
+                    bot.seq_stop.set()
+                    bot.play_recording(idle_seq, idler=True)
+        # sequence not found
+        else:
+            print("Unknown sequence name:", seq)
+            return
+
+    # record sequence
+    # elif cmd == 'r':
+    #     record(robot)
+    #     input("Press 'enter' to stop recording")
+    #     stop_record(robot, input("Seq name: "))
+
+    # reload gestures
+    elif cmd == 'r':
+        master_robot.load_seq()
+
+    # list and print sequences (only for the first attached robot)
+    elif cmd == 'l' or cmd == 'ls':
+        # remove asterisk (terminal holdover)
+        if args:
+            args[0] = args[0].replace('*', '')
+        for seq_name in robot.seq_list.keys():
+            # skip if argument is not in the current sequence name
+            if args and args[0] != seq_name[:len(args[0])]:
+                continue
+            print(seq_name)
+
+    # exit
+    elif cmd == 'q':
+        handle_quit()
+
+    # debugging stuff
+    # manually move
+    elif cmd == 'm':
         # get motor and pos if not given
         if not args:
-            args = ['', '', '']
-            args[0] = input('Motor # (1, 2, 3): ')
+            args = ['', '']
+            args[0] = input('Motor: ')
             args[1] = input('Position: ')
-            args[2] = input('Speed: ')
-        for bot in robots:
-            bot.speed = float(args[2])
         for bot in robots:
             if (args[0] == 'all'):
-                bot.goto_position({'tower_1': float(args[1]), 'tower_2': float(args[1]), 'tower_3': float(args[1])}, 0, True)
+                bot.goto_position({'tower_1': float(args[1]), 'tower_2': float(
+                    args[1]), 'tower_3': float(args[1])}, 0, True)
             else:
-                args[0] = 'tower_'+str(args[0])
                 bot.goto_position({args[0]: float(args[1])}, 0, True)
 
     # adjust speed (0.5 to 2.0)
@@ -129,34 +219,34 @@ def handle_input(robot, cmd, args=[]):
         exec('help(' + input('Help: ') + ')')
 
     # manual control
-    elif cmd == 'man':
-        while True:
-            try:
-                exec(input('Command: '))
-            except KeyboardInterrupt:
-                break
+    #elif cmd == 'man':
+    #    while True:
+    #        try:
+    #            exec(input('Command: '))
+    #        except KeyboardInterrupt:
+    #            break
 
     #elif cmd == '':
-        #handle_input(master_robot, last_cmd, last_args)
-        #return
+    #    handle_input(master_robot, last_cmd, last_args)
+    #    return
     # directly call a sequence (skip 's')
-    #elif cmd in robot.seq_list.keys():
-        #args = [cmd]
-        #cmd = 's'
-        #handle_input(master_robot, cmd, args)
+    elif cmd in robot.seq_list.keys():
+        args = [cmd]
+        cmd = 's'
+        handle_input(master_robot, cmd, args)
     # directly call a random sequence by partial name match
-    #elif [cmd in seq_name for seq_name in robot.seq_list.keys()]:
+    elif [cmd in seq_name for seq_name in robot.seq_list.keys()]:
         # print(args[0])
-        #if 'mix' not in cmd:
-            #seq_list = [seq_name for seq_name in robot.seq_list.keys() if cmd in seq_name and 'mix' not in seq_name]
-        #else:
-        #    seq_list = [seq_name for seq_name in robot.seq_list.keys() if cmd in seq_name]
+        if 'mix' not in cmd:
+            seq_list = [seq_name for seq_name in robot.seq_list.keys() if cmd in seq_name and 'mix' not in seq_name]
+        else:
+            seq_list = [seq_name for seq_name in robot.seq_list.keys() if cmd in seq_name]
 
-        #if len(seq_list) == 0:
-        #    print("No sequences matching name: %s" % (cmd))
-        #    return
-        #handle_input(master_robot, 's', [random.choice(seq_list)])
-        #cmd = cmd
+        if len(seq_list) == 0:
+            print("No sequences matching name: %s" % (cmd))
+            return
+        handle_input(master_robot, 's', [random.choice(seq_list)])
+        cmd = cmd
 
     # elif cmd == 'c':
     #     robot.calibrate()
@@ -270,7 +360,7 @@ def safe_init_robot(name, config):
     # keep trying until number of attempts reached
     while bot is None:
         try:
-            bot = SequenceRobot(name, config)
+            bot = sequencerobot.SequenceRobot(name, config)
         except (DxlError, NotImplementedError, RuntimeError, SerialException) as e:
             if attempts <= 0:
                 raise e

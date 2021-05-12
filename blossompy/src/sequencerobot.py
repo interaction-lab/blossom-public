@@ -8,7 +8,7 @@ import os
 import shutil
 import signal
 from config import RobotConfig
-from src import robot, sequence
+import robot, sequence
 import yaml
 import threading
 
