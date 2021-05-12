@@ -105,14 +105,16 @@ Available commands:
 - To perform an idler (looped gesture), enter two sequence names separated by `=`, e.g. `s` -> Enter -> `yes=no` (play `yes` then loop `no` indefinitely until another sequence is played).  
 - `q`: quit
 
-## Interfaces
+## Running Breathing gestures
 
-The startup prompt will say
+This Blossom package specifically implements breathing exercises that can be
+used in socially assistive human robot interaction in a variety of applications.
 
-    +-------------------+
-    |     IP ADDRESS    |
-    +-------------------+
-    | 10.132.3.171:8000 |
-    +-------------------+
-
-The IP address in this case is `10.132.3.171`. **Your IP address will be different from 10.132.3.171**
+To run the breathing demo, plug Blossom in and run:
+```
+python breathingdemo.py
+```
+To run the specific breathing controls, plug Blossom in and run:
+```
+python breathingexercise.py
+```
