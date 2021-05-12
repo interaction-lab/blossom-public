@@ -10,6 +10,7 @@ import argparse
 import os
 import shutil
 import signal
+import constants
 from config import RobotConfig
 from src import robot, sequence
 from sequencerobot import SequenceRobot
@@ -28,6 +29,11 @@ master_robot = None
 robots = []
 last_cmd, last_args = 'rand', []
 
+with open(r'E:\data\categories.yaml') as file:
+    documents = yaml.full_load(file)
+
+    for item, doc in documents.items():
+        print(item, ":", doc)
 
 def run_cli(robot):
     """
@@ -37,7 +43,7 @@ def run_cli(robot):
     print("\ncli running")
     while(1):
         # get command string
-        cmd_str = raw_input("Enter a command ('h' for help or 'l' for list of sequences): \n>>>")
+        cmd_str = raw_input(constants.prompt)
         cmd_string = re.split('/| ', cmd_str)
         cmd = cmd_string[0]
 

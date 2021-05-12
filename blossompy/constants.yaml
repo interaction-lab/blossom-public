@@ -10,4 +10,4 @@ post: 0.0
 #br
 br: 57600
 # CLI prompt
-prompt: (l)ist sequences / (s)equence play / (q)uit:
+prompt: "Enter a command, or (l)ist sequences / (s)equence play / (q)uit:"
