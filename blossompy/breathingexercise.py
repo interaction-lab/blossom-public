@@ -13,7 +13,7 @@ import shutil
 import signal
 from config import RobotConfig
 from src import robot, sequence
-from sequencerobot import SequenceRobot
+from src import sequencerobot
 import re
 from serial.serialutil import SerialException
 from pypot.dynamixel.controller import DxlError
@@ -48,7 +48,7 @@ def run_cli(robot):
     while(1):
         # get command string
         print("\n\n\n")
-        cmd_str = raw_input("Enter E for Exhale, I for Inhale.\nEnter 1, 2, or 3 for speed settings (3 is fastest): ")
+        cmd_str = input("Enter E for Exhale, I for Inhale.\nEnter 1, 2, or 3 for speed settings (3 is fastest): ")
         cmd = cmd_str
 
         # parse to get argument
@@ -208,15 +208,15 @@ def handle_input(robot, cmd, args=[]):
     # adjust speed (0.5 to 2.0)
     elif cmd == 'e':
         for bot in robots:
-            bot.speed = float(raw_input('Speed factor: '))
+            bot.speed = float(input('Speed factor: '))
     # adjust amplitude (0.5 to 2.0)
     elif cmd == 'a':
         for bot in robots:
-            bot.amp = float(raw_input('Amplitude factor: '))
+            bot.amp = float(input('Amplitude factor: '))
     # adjust posture (-150 to 150)
     elif cmd == 'p':
         for bot in robots:
-            bot.post = float(raw_input('Posture factor: '))
+            bot.post = float(input('Posture factor: '))
 
     # help
     elif cmd == 'h':
@@ -235,15 +235,20 @@ def handle_input(robot, cmd, args=[]):
     #    return
     # directly call a sequence (skip 's')
     elif cmd in robot.seq_list.keys():
+        print("here");
         args = [cmd]
+        print(args);
         cmd = 's'
         handle_input(master_robot, cmd, args)
     # directly call a random sequence by partial name match
     elif [cmd in seq_name for seq_name in robot.seq_list.keys()]:
         # print(args[0])
+        print("here2");
         if 'mix' not in cmd:
             seq_list = [seq_name for seq_name in robot.seq_list.keys() if cmd in seq_name and 'mix' not in seq_name]
+            print(seq_list);
         else:
+            print("here3");
             seq_list = [seq_name for seq_name in robot.seq_list.keys() if cmd in seq_name]
 
         if len(seq_list) == 0:
@@ -364,7 +369,7 @@ def safe_init_robot(name, config):
     # keep trying until number of attempts reached
     while bot is None:
         try:
-            bot = SequenceRobot(name, config)
+            bot = sequencerobot.SequenceRobot(name, config)
         except (DxlError, NotImplementedError, RuntimeError, SerialException) as e:
             if attempts <= 0:
                 raise e

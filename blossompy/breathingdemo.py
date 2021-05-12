@@ -22,6 +22,7 @@ import time
 import threading
 import uuid
 import requests
+import simpleaudio as sa #used for playing audio files to facilitate exercise
 # seed time for better randomness
 random.seed(time.time())
 
@@ -45,24 +46,53 @@ def run_cli(robot):
     """
     Handle CLI inputs indefinitely
     """
-    cmd = "reset"
-    args = None
+    cmd = 's';
+    args = ["reset"];
     handle_input(master_robot, cmd, args)
     time.sleep(3);
 
-    for i in range(0,8):
+    filename = 'breathing_facilitation.wav'
+    wave_obj = sa.WaveObject.from_wave_file(filename)
+    play_obj = wave_obj.play()
+    time.sleep(27);
+
+
+    for i in range (0,2):
         # get command string
-        args = None
-        if(i%2 == 0):
-            cmd = "I";
-            print("\ninhaling . . .\n")
-            handle_input(master_robot, cmd, args)
-        else:
-            cmd = "E";
-            print("\nexhaling . . .\n")
-            handle_input(master_robot, cmd, args)
-        time.sleep(8);
+        args = ["breathing/inhale"];
+        print("\ninhaling . . .\n")
+        handle_input(master_robot, cmd, args)
+        time.sleep(5);
+        args = ['breathing/exhale'];
+        print("\nexhaling . . .\n")
+        handle_input(master_robot, cmd, args)
+        time.sleep(5)
         # parse to get argument
+
+    time.sleep(27);
+    for i in range (0,2):
+        # get command string
+        args = ["breathing/inhale"];
+        print("\ninhaling . . .\n")
+        handle_input(master_robot, cmd, args)
+        time.sleep(5);
+        args = ['breathing/exhale'];
+        print("\nexhaling . . .\n")
+        handle_input(master_robot, cmd, args)
+        time.sleep(5)
+
+    time.sleep(24);
+    for i in range (0,3):
+        # get command string
+        args = ["breathing/inhale"];
+        print("\ninhaling . . .\n")
+        handle_input(master_robot, cmd, args)
+        time.sleep(5);
+        args = ['breathing/exhale'];
+        print("\nexhaling . . .\n")
+        handle_input(master_robot, cmd, args)
+        time.sleep(5)
+
     print("\nFinished! Thanks for trying Blossom Breathing.")
         # handle the command and arguments
 
@@ -103,15 +133,17 @@ def handle_input(robot, cmd, args=[]):
     # global post
     # print(cmd, args)
     # separator between sequence and idler
-    if cmd == "E":
-        cmd = 'exhale'
-    elif cmd == "I":
-        cmd = 'inhale'
     global last_cmd, last_args
     idle_sep = '='
     # play sequence
 
+    for bot in robots:
+        bot.speed = float(1.2);
+
     if cmd == 's' or cmd == 'rand':
+        # if random, choose random sequence
+        if cmd == 'rand':
+            args = [random.choice(robot.seq_list.keys())]
         # default to not idling
         # idler = False
         # get sequence if not given
@@ -128,13 +160,16 @@ def handle_input(robot, cmd, args=[]):
         idle_seq = ''
         if (idle_sep in seq):
             (seq, idle_seq) = re.split(idle_sep + '| ', seq)
-        # speed = 1.0
-        # amp = 1.0
-        # post = 0.0
 
-        # if (len(args)>=2) : speed = args[1]
-        # if (len(args)>=3) : amp = args[2]
-        # if (len(args)>=4) : post = args[3]
+        # catch hardcoded idle sequences
+        if(seq == 'random'):
+            random.seed(time.time())
+            seq = random.choice(['calm', 'slowlook', 'sideside'])
+        if(idle_seq == 'random'):
+            random.seed(time.time())
+            idle_seq = random.choice(['calm', 'slowlook', 'sideside'])
+        if (seq == 'calm' or seq == 'slowlook' or seq == 'sideside'):
+            idle_seq = seq
 
         # play the sequence if it exists
         if seq in robot.seq_list:
@@ -160,102 +195,10 @@ def handle_input(robot, cmd, args=[]):
         else:
             print("Unknown sequence name:", seq)
             return
-
-    # record sequence
-    # elif cmd == 'r':
-    #     record(robot)
-    #     input("Press 'enter' to stop recording")
-    #     stop_record(robot, input("Seq name: "))
-
-    # reload gestures
-    elif cmd == 'r':
-        master_robot.load_seq()
-
-    # list and print sequences (only for the first attached robot)
-    elif cmd == 'l' or cmd == 'ls':
-        # remove asterisk (terminal holdover)
-        if args:
-            args[0] = args[0].replace('*', '')
-        for seq_name in robot.seq_list.keys():
-            # skip if argument is not in the current sequence name
-            if args and args[0] != seq_name[:len(args[0])]:
-                continue
-            print(seq_name)
-
-    # exit
-    elif cmd == 'q':
-        handle_quit()
-
-    # debugging stuff
-    # manually move
-    elif cmd == 'm':
-        # get motor and pos if not given
-        if not args:
-            args = ['', '']
-            args[0] = input('Motor: ')
-            args[1] = input('Position: ')
-        for bot in robots:
-            if (args[0] == 'all'):
-                bot.goto_position({'tower_1': float(args[1]), 'tower_2': float(
-                    args[1]), 'tower_3': float(args[1])}, 0, True)
-            else:
-                bot.goto_position({args[0]: float(args[1])}, 0, True)
-
-    # adjust speed (0.5 to 2.0)
-    elif cmd == 'e':
-        for bot in robots:
-            bot.speed = float(raw_input('Speed factor: '))
-    # adjust amplitude (0.5 to 2.0)
-    elif cmd == 'a':
-        for bot in robots:
-            bot.amp = float(raw_input('Amplitude factor: '))
-    # adjust posture (-150 to 150)
-    elif cmd == 'p':
-        for bot in robots:
-            bot.post = float(raw_input('Posture factor: '))
-
-    # help
-    elif cmd == 'h':
-        exec('help(' + input('Help: ') + ')')
-
-    # manual control
-    #elif cmd == 'man':
-    #    while True:
-    #        try:
-    #            exec(input('Command: '))
-    #        except KeyboardInterrupt:
-    #            break
-
-    #elif cmd == '':
-    #    handle_input(master_robot, last_cmd, last_args)
-    #    return
-    # directly call a sequence (skip 's')
-    elif cmd in robot.seq_list.keys():
-        args = [cmd]
-        cmd = 's'
-        handle_input(master_robot, cmd, args)
-    # directly call a random sequence by partial name match
-    elif [cmd in seq_name for seq_name in robot.seq_list.keys()]:
-        # print(args[0])
-        if 'mix' not in cmd:
-            seq_list = [seq_name for seq_name in robot.seq_list.keys() if cmd in seq_name and 'mix' not in seq_name]
-        else:
-            seq_list = [seq_name for seq_name in robot.seq_list.keys() if cmd in seq_name]
-
-        if len(seq_list) == 0:
-            print("No sequences matching name: %s" % (cmd))
-            return
-        handle_input(master_robot, 's', [random.choice(seq_list)])
-        cmd = cmd
-
-    # elif cmd == 'c':
-    #     robot.calibrate()
-
     else:
         print("Invalid input")
         return
     last_cmd, last_args = cmd, args
-
 
 def record(robot):
     """
