@@ -125,7 +125,7 @@ To run the breathing demo with only audial instructions, plug Blossom in and run
 ```
 python breathingdemo.py
 ```
-To run the breathing demo with video instructions, plug Blossom in and run:
+To run the video led breathing demo, plug Blossom in and run:
 ```
 python breathingdemoVIDEO.py
 ```

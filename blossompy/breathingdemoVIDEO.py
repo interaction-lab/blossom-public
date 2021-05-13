@@ -72,7 +72,7 @@ def run_cli(robot):
         # get command string
         args = ["breathing/inhale"];
         handle_input(master_robot, cmd, args)
-        time.sleep(2);
+        time.sleep(5);
         args = ['breathing/exhale'];
         handle_input(master_robot, cmd, args)
 
