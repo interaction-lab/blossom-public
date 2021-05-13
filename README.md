@@ -110,9 +110,24 @@ Available commands:
 This Blossom package specifically implements breathing exercises that can be
 used in socially assistive human robot interaction in a variety of applications.
 
-To run the breathing demo, plug Blossom in and run:
+For the breathing demos, you will need simple audio and OpenCV. To download
+simple audio, run:
+```
+pip install simpleaudio
+```
+
+To download OpenCV run:
+```
+pip install opencv-python
+```
+
+To run the breathing demo with only audial instructions, plug Blossom in and run:
 ```
 python breathingdemo.py
+```
+To run the breathing demo with video instructions, plug Blossom in and run:
+```
+python breathingdemoVIDEO.py
 ```
 To run the specific breathing controls, plug Blossom in and run:
 ```
