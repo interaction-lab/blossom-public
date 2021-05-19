@@ -235,20 +235,15 @@ def handle_input(robot, cmd, args=[]):
     #    return
     # directly call a sequence (skip 's')
     elif cmd in robot.seq_list.keys():
-        print("here");
         args = [cmd]
-        print(args);
         cmd = 's'
         handle_input(master_robot, cmd, args)
     # directly call a random sequence by partial name match
     elif [cmd in seq_name for seq_name in robot.seq_list.keys()]:
         # print(args[0])
-        print("here2");
         if 'mix' not in cmd:
             seq_list = [seq_name for seq_name in robot.seq_list.keys() if cmd in seq_name and 'mix' not in seq_name]
-            print(seq_list);
         else:
-            print("here3");
             seq_list = [seq_name for seq_name in robot.seq_list.keys() if cmd in seq_name]
 
         if len(seq_list) == 0:

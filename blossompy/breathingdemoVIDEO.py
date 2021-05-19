@@ -25,7 +25,6 @@ import time
 import threading
 import uuid
 import requests
-import simpleaudio as sa #used for playing audio files to facilitate exercise
 # seed time for better randomness
 random.seed(time.time())
 

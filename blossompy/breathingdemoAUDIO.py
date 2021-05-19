@@ -28,6 +28,7 @@ random.seed(time.time())
 
 master_robot = None
 robots = []
+last_cmd, last_args = 'rand', []
 
 '''
 CLI Code
@@ -46,52 +47,63 @@ def run_cli(robot):
     """
     Handle CLI inputs indefinitely
     """
-    cmd = 's';
-    args = ["reset"];
+    cmd = 's'
+    args = ["breathing/startbreath"]
     handle_input(master_robot, cmd, args)
-    time.sleep(3);
+    time.sleep(4)
 
     filename = 'breathing_facilitation.wav'
     wave_obj = sa.WaveObject.from_wave_file(filename)
     play_obj = wave_obj.play()
-    time.sleep(27);
-
+    print("\nplaying\n")
+    time.sleep(27)
 
     for i in range (0,2):
         # get command string
-        args = ["breathing/inhale"];
+        args = ["breathing/inhale"]
         print("\ninhaling . . .\n")
         handle_input(master_robot, cmd, args)
-        time.sleep(5);
-        args = ['breathing/exhale'];
+        time.sleep(5)
+        args = ['breathing/exhale']
         print("\nexhaling . . .\n")
         handle_input(master_robot, cmd, args)
-        time.sleep(5)
+        time.sleep(4)
         # parse to get argument
 
-    time.sleep(27);
+    args = ["breathing/intermediate"]
+    handle_input(master_robot, cmd, args)
+    time.sleep(27)
+    args = ["breathing/startbreath"]
+    handle_input(master_robot, cmd, args)
+
     for i in range (0,2):
         # get command string
-        args = ["breathing/inhale"];
+        args = ["breathing/inhale"]
         print("\ninhaling . . .\n")
         handle_input(master_robot, cmd, args)
-        time.sleep(5);
-        args = ['breathing/exhale'];
+        time.sleep(5)
+        args = ['breathing/exhale']
         print("\nexhaling . . .\n")
         handle_input(master_robot, cmd, args)
         time.sleep(5)
 
-    time.sleep(24);
+    args = ["breathing/intermediate"]
+    handle_input(master_robot, cmd, args)
+    time.sleep(20)
+    args = ["breathing/startbreath"]
+    handle_input(master_robot, cmd, args)
+    time.sleep(3)
+
     for i in range (0,3):
         # get command string
-        args = ["breathing/inhale"];
+        args = ["breathing/inhale"]
         print("\ninhaling . . .\n")
         handle_input(master_robot, cmd, args)
-        time.sleep(5);
-        args = ['breathing/exhale'];
+        time.sleep(5)
+        args = ['breathing/exhale']
         print("\nexhaling . . .\n")
         handle_input(master_robot, cmd, args)
-        time.sleep(5)
+        time.sleep(4.5)
 
     print("\nFinished! Thanks for trying Blossom Breathing.")
         # handle the command and arguments
@@ -138,7 +150,7 @@ def handle_input(robot, cmd, args=[]):
     # play sequence
 
     for bot in robots:
-        bot.speed = float(1.2);
+        bot.speed = float(1.2)
 
     if cmd == 's' or cmd == 'rand':
         # if random, choose random sequence
@@ -277,8 +289,6 @@ def main(args):
               for name, config in configs.items()]
     robots.append(master_robot)
 
-    master_robot.reset_position()
-
     # start CLI
     start_cli(master_robot)
     while True:
@@ -325,8 +335,6 @@ def parse_args(args):
                         help='Name of the robot.', default=["woody"])
     parser.add_argument('--port', '-p', type=int,
                         help='Port to start server on.', default=8000)
-    # parser.add_argument('--host', '-i', type=str, help='IP address of webserver',
-    #                     default=srvr.get_ip_address())
     parser.add_argument('--browser-disable', '-b',
                         help='prevent a browser window from opening with the blossom UI',
                         action='store_true')

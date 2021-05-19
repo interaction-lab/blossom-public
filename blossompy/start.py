@@ -7,13 +7,13 @@ from __future__ import print_function
 import sys
 import yaml
 import argparse
+import string
 import os
 import shutil
 import signal
-import constants
 from config import RobotConfig
 from src import robot, sequence
-from sequencerobot import SequenceRobot
+from src import sequencerobot
 import re
 from serial.serialutil import SerialException
 from pypot.dynamixel.controller import DxlError
@@ -29,12 +29,6 @@ master_robot = None
 robots = []
 last_cmd, last_args = 'rand', []
 
-with open(r'E:\data\categories.yaml') as file:
-    documents = yaml.full_load(file)
-
-    for item, doc in documents.items():
-        print(item, ":", doc)
-
 def run_cli(robot):
     """
     Handle CLI inputs indefinitely
@@ -43,7 +37,7 @@ def run_cli(robot):
     print("\ncli running")
     while(1):
         # get command string
-        cmd_str = raw_input(constants.prompt)
+        cmd_str = input("Enter a command, 'l' for a list:")
         cmd_string = re.split('/| ', cmd_str)
         cmd = cmd_string[0]
 
@@ -95,7 +89,6 @@ def handle_input(robot, cmd, args=[]):
         # get sequence if not given
         if not args:
             args = ['']
-            # args[0] = raw_input('Sequence: ')
             seq = input('Sequence: ')
         else:
             seq = args[0]
@@ -303,7 +296,7 @@ def safe_init_robot(name, config):
     # keep trying until number of attempts reached
     while bot is None:
         try:
-            bot = SequenceRobot(name, config)
+            bot = sequencerobot.SequenceRobot(name, config)
         except (DxlError, NotImplementedError, RuntimeError, SerialException) as e:
             if attempts <= 0:
                 raise e
