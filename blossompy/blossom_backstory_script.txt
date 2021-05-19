@@ -1,0 +1,8 @@
+<speak>
+Hi! My name is Blossom, very nice to meet you! 
+<break time="2s"/> 
+I don't know about you, but sometimes I feel unhappy and frustrated. This can be really annoying right?
+<break time="2s"/> 
+If you also sometimes feel the same way. My friend Joanna recommended a really useful trick to help us feel better whenever we are having negative or bad feelings again.
+It is called "mindfulness breathing exercise". Would you want to give a try?
+</speak>
