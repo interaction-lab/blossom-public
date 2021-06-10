@@ -3,7 +3,7 @@
 This python package includes all the basics necessary to run your
 Blossom robot to make it perform various gestures and sequences.
 
-##About Blossom
+## About Blossom
 
 Blossom is an open-hardware, open-source tensile robot that you can handcraft and accessorize to your liking. You can read more about the project in [Evan Ackerman's IEEE Spectrum article](https://spectrum.ieee.org/automaton/robotics/home-robots/blossom-a-creative-handmade-approach-to-social-robotics-from-cornell-and-google).
 
@@ -17,10 +17,10 @@ Here are two examples of Blossom robots:
 ## Setup Software Dependencies
 
 Make sure you're using [Python `3`]
-To check, run `python -V` or `python3 -V`in the terminal to check the version. As of now, this codebase was tested and works on `Python 3.5.2` on Ubuntu 16.04 and Mac.
+To check, run `python -V` or `python3 -V` in the terminal to check the version. As of now, this codebase was tested and works on `Python 3.5.2` on Ubuntu 16.04 and Mac.
 _The following steps will assume `python -V` reports with version `>3.x.x`. If it reports `2.x.x` then replace `python` in the following steps with `python3`_
 
-Also ensure that [`pip3` is installed](https://pip.pypa.io/en/stable/installing/).
+Also ensure that [pip3 is installed](https://pip.pypa.io/en/stable/installing/).
 To install:\
 Ubuntu: `sudo apt install python3-pip`\
 Mac: `curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py`, then `python3 get-pip.py`
@@ -38,10 +38,10 @@ source blossom_venv/bin/activate
 ### General Setup
 
 
-_Ubuntu_: You may need to run
+_Ubuntu_: You may need to run:
 
 ```
-sudo apt-get install build-essential libssl-dev libffi-dev python3-dev`  
+sudo apt-get install build-essential libssl-dev libffi-dev python3-dev
 ```
 and
 ```
@@ -110,16 +110,6 @@ Available commands:
 This Blossom package specifically implements breathing exercises that can be
 used in socially assistive human robot interaction in a variety of applications.
 
-For the breathing demos, you will need simple audio and OpenCV. To download
-simple audio, run:
-```
-pip install simpleaudio
-```
-
-To download OpenCV run:
-```
-pip install opencv-python
-```
 
 To run the breathing demo with only audial instructions, plug Blossom in and run:
 ```

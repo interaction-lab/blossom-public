@@ -1,16 +1,17 @@
 from __future__ import print_function
 
 import os
-import sys
-import subprocess
-import argparse
-import os
-import shutil
-import signal
-from config import RobotConfig
 from src import robot, sequence
-import yaml
 import threading
+from serial.serialutil import SerialException
+from pypot.dynamixel.controller import DxlError
+# import sys
+# import subprocess
+# import argparse
+# import shutil
+# import signal
+# from src.config import RobotConfig
+# import yaml
 
 loaded_seq = []
 
@@ -22,24 +23,42 @@ class SequenceRobot(robot.Robot):
 
     def __init__(self, name, config):
         # init robot
+        self.safe_init_robot(name, config, attempts=10)
 
-        br=57600
-        super(SequenceRobot, self).__init__(config, br, name)
-        # save configuration (list of motors for PyPot)
-        self.config = config
-        # threads for playing and recording sequences
-        self.seq_thread = self.seq_stop = None
-        self.rec_thread = self.rec_stop = None
-        # load all sequences for this robot
-        self.load_seq()
+    def safe_init_robot(self, name, config, attempts=10):
+        """
+        Safely start/init robots, due to sometimes failing to start motors
+        args:
+            name    name of the robot to start
+            config  the motor configuration of the robot
+        returns:
+            the started SequenceRobot object
+        """
+        while attempts >0:
+            try:
+                br=57600
+                super(SequenceRobot, self).__init__(config, br, name)
+                # save configuration (list of motors for PyPot)
+                self.config = config
+                # threads for playing and recording sequences
+                self.seq_thread = self.seq_stop = None
+                self.rec_thread = self.rec_stop = None
+                # load all sequences for this robot
+                self.load_all_sequences()
 
-        # speed, amp range from 0.5 to 1.5
-        self.speed = 1.0
-        self.amp = 1.0
-        # posture ranges from -100 to 100
-        self.post = 0.0
+                # speed, amp range from 0.5 to 1.5
+                self.speed = 1.0
+                self.amp = 1.0
+                # posture ranges from -100 to 100
+                self.post = 0.0
+                attempts = 0
+            except (DxlError, NotImplementedError, RuntimeError, SerialException) as e:
+                if attempts <= 0:
+                    raise e
+                print(e, "retrying...")
+                attempts -= 1
 
-    def load_seq(self):
+    def load_all_sequences(self):
         """
         Load all sequences in robot's directory
         TODO - clean this up - try glob or os.walk
@@ -61,7 +80,7 @@ class SequenceRobot(robot.Robot):
             # is sequence, load
             if (seq[-5:] == '.json' and subseq_dir not in loaded_seq):
                 # print("Loading {}".format(seq))
-                self.load_sequence(subseq_dir)
+                self.load_sequences(subseq_dir)
                 # loaded_seq.append(subseq_dir)
 
             # is subdirectory, go in and load all sequences
@@ -73,7 +92,7 @@ class SequenceRobot(robot.Robot):
                     seq_name = "%s/%s"%(subseq_dir,s)
                     if (s[-5:] == '.json' and seq_name not in loaded_seq):
                         # print("Loading {}".format(s))
-                        self.load_sequence(seq_name)
+                        self.load_sequences(seq_name)
                         # loaded_seq.append(seq_name)
         # bar.finish()
 
@@ -92,7 +111,7 @@ class SequenceRobot(robot.Robot):
         tempMap = self.assign_time_length(tempKeys, tempVals)
         return tempMap
 
-    def get_sequences(self):
+    def get_sequence_names(self):
         """
         Get all sequences loaded on robot
         """

@@ -12,7 +12,7 @@ import string
 import os
 import shutil
 import signal
-from config import RobotConfig
+from src.config import RobotConfig
 from src import robot, sequence
 from src import sequencerobot
 import re

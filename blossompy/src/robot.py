@@ -108,7 +108,7 @@ class Robot(object):
             m.compliant = compliant
         self.compliant = compliant
 
-    def load_sequence(self, seq_fn, rad=True, force=True):
+    def load_sequences(self, seq_fn, rad=True, force=True):
         """
         Load sequence from json file
         args:

@@ -11,7 +11,7 @@ import string
 import os
 import shutil
 import signal
-from config import RobotConfig
+from src.config import RobotConfig
 from src import robot, sequence
 from src import sequencerobot
 import re
@@ -173,7 +173,7 @@ def handle_input(robot, cmd, args=[]):
 
     # reload gestures
     elif cmd == 'r':
-        master_robot.load_seq()
+        master_robot.load_all_sequences()
 
     # list and print sequences (only for the first attached robot)
     elif cmd == 'l' or cmd == 'ls':

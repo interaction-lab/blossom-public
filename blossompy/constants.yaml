@@ -1,4 +1,3 @@
-#constants.yaml
 #Contains constants for robot control that are used in start.py
 
 # speed factor to playback sequences
