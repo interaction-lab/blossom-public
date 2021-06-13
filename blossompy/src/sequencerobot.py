@@ -1,7 +1,8 @@
 from __future__ import print_function
 
 import os
-from src import robot, sequence
+from .robot import Robot
+from .sequence import Sequence, SequencePrimitive, RecorderPrimitive
 import threading
 from serial.serialutil import SerialException
 from pypot.dynamixel.controller import DxlError
@@ -15,14 +16,15 @@ from pypot.dynamixel.controller import DxlError
 
 loaded_seq = []
 
-class SequenceRobot(robot.Robot):
+class SequenceRobot(Robot):
     """
     Robot that loads, plays, and records sequences
     Extends Robot class
     """
 
-    def __init__(self, name, config):
+    def __init__(self, name, config, sequence_dir='blossompy/src/sequences'):
         # init robot
+        self.sequence_dir = sequence_dir
         self.safe_init_robot(name, config, attempts=10)
 
     def safe_init_robot(self, name, config, attempts=10):
@@ -34,6 +36,7 @@ class SequenceRobot(robot.Robot):
         returns:
             the started SequenceRobot object
         """
+        print("Starting Safe Initialization")
         while attempts >0:
             try:
                 br=57600
@@ -57,6 +60,7 @@ class SequenceRobot(robot.Robot):
                     raise e
                 print(e, "retrying...")
                 attempts -= 1
+        print("Init Complete")
 
     def load_all_sequences(self):
         """
@@ -64,7 +68,7 @@ class SequenceRobot(robot.Robot):
         TODO - clean this up - try glob or os.walk
         """
         # get directory
-        seq_dir = './src/sequences/%s' % self.name
+        seq_dir = os.path.join(self.sequence_dir,self.name)
         # make sure that directory for robot's seqs exist
         if not os.path.exists(seq_dir):
             os.makedirs(seq_dir)
@@ -95,6 +99,7 @@ class SequenceRobot(robot.Robot):
                         self.load_sequences(seq_name)
                         # loaded_seq.append(seq_name)
         # bar.finish()
+        print("Loaded sequences - ", len(self.seq_list))
 
     def assign_time_length(self, keys, vals):
         timeMap = [None] * len(keys)
@@ -125,13 +130,13 @@ class SequenceRobot(robot.Robot):
         returns:
             the thread setting motor position in the sequence
         """
-        seq = sequence.Sequence.from_json_object(seq_json, rad=True)
+        seq = Sequence.from_json_object(seq_json, rad=True)
         # create stop flag object
         self.seq_stop = threading.Event()
 
         # start playback thread
-        self.seq_thread = robot.sequence.SequencePrimitive(
-            self, seq, self.seq_stop, speed=speed, amp=amp, post=post)
+        self.seq_thread = SequencePrimitive(
+            self, seq, self.seq_stop, speed=self.speed, amp=self.amp, post=self.post)
         self.seq_thread.start()
 
         # return thread
@@ -155,7 +160,7 @@ class SequenceRobot(robot.Robot):
             idler = True
 
         # start playback thread
-        self.seq_thread = robot.sequence.SequencePrimitive(
+        self.seq_thread = SequencePrimitive(
             self, self.seq_list[seq], self.seq_stop, idler=idler, speed=self.speed, amp=self.amp, post=self.post)
         self.seq_thread.start()
         # return thread
@@ -169,5 +174,5 @@ class SequenceRobot(robot.Robot):
         self.rec_stop = threading.Event()
 
         # start recording thread
-        self.rec_thread = robot.sequence.RecorderPrimitive(self, self.rec_stop)
+        self.rec_thread = RecorderPrimitive(self, self.rec_stop)
         self.rec_thread.start()

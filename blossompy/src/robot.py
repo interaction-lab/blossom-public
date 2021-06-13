@@ -1,5 +1,5 @@
 import pypot.robot
-from . import sequence
+from .sequence import Sequence
 import collections
 
 # define the robot
@@ -51,21 +51,24 @@ class Robot(object):
         self.believed_motor_pos = self.reset_pos
         self.reset_position()
 
-    def goto_position(self, motor_pos, delay=100, wait=True):
+    def goto_position(self, motor_pos, duration=1000, wait=True):
         """
         Wrapper for PyPot.Robot.goto_position
         args:
             motor_pos   {motor_name:position} dict of goal positions
-            delay       how long to allow motors to reach position (millis)
+            duration       how long to allow motors to reach position (millis)
             wait        wait for the motors to reach goal before new cmd
         """
+        print("Moving", motor_pos)
         # activate motors
         if(self.compliant):
             self.set_compliant(False)
 
         # try going to position
         try:
-            self.robot.goto_position(motor_pos, duration=delay, wait=wait)
+            print("Sending move command: ",motor_pos, duration, wait)
+            self.robot.goto_position(motor_pos, control='dummy', duration=duration, wait=wait)
+            print("returning from move, at position:", self.get_motor_pos())
         # motor doesn't exist or otherwise not able to move
         # TODO: handle this better
         except AttributeError as e:
@@ -89,6 +92,7 @@ class Robot(object):
         """
         reset motors to resting position
         """
+        print("Reseting position to: ", self.reset_pos)
         self.goto_position(self.reset_pos, 0)
 
     def reconfig(self, config):
@@ -115,7 +119,7 @@ class Robot(object):
             seq_fn  filename for sequence json
             rad     whether source is in radians
         """
-        seq = sequence.Sequence.from_json(seq_fn, rad)
+        seq = Sequence.from_json(seq_fn, rad)
 
         # don't add if sequence name already exists
         if (seq.seq_name in self.seq_list.keys() and not force):
