@@ -10,3 +10,4 @@ flask_cors
 PyYAML
 simpleaudio
 opencv-python
+getch

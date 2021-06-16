@@ -4,20 +4,11 @@ Uses demo video from teachers at the Pacific Autism Center for Education.
 """
 
 # make sure that prints will be supported
-from __future__ import print_function
-import sys
-import yaml
-import argparse
-import string
-import os
-import shutil
-import signal
-from src.config import RobotConfig
-from src import robot, sequence
-from src import sequencerobot
-import re
-from serial.serialutil import SerialException
-from pypot.dynamixel.controller import DxlError
+import argparse, sys
+sys.path.append("..")
+print(sys.path)
+from blossompy import Blossom
+from time import sleep
 import random
 import cv2
 import numpy as np

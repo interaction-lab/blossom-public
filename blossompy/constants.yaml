@@ -10,3 +10,7 @@ post: 0.0
 br: 57600
 # CLI prompt
 prompt: "Enter a command, or (l)ist sequences / (s)equence play / (q)uit:"
+#up arrow, down arrow
+up: 72
+down: 80
+

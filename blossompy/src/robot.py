@@ -88,6 +88,9 @@ class Robot(object):
             motor_pos.update({name: m.present_position})
         return motor_pos
 
+    def get_indiv_motor_pos(self, motor_name):
+        return self.motors.get(motor_name).present_position
+
     def reset_position(self):
         """
         reset motors to resting position

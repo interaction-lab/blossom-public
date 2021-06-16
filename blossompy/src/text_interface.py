@@ -5,6 +5,10 @@ from .config import RobotConfig
 from .sequencerobot import SequenceRobot
 import random, time
 import threading
+from getch import getch, pause
+import yaml
+#with open(r'..constants.yaml') as file:
+    #constants = yaml.load(file, Loader=yaml.FullLoader)
 
 # seed time for better randomness
 random.seed(time.time())
@@ -27,6 +31,7 @@ class CLI():
             "\n\t Adjust speed: e" +
             "\n\t Adjust amplitude: a" +
             "\n\t Adjust posture: p" +
+            "\n\t Create a new configuration: c" +
             "\n" +
             "\nExec python command: man" +
             "\n" +
@@ -91,6 +96,10 @@ class CLI():
             self.robot.post = float(input('Choose Posture factor [range: (-150 to 150)]: '))
         elif cmd == 'h':
             self.print_help()
+        elif cmd == 'c':
+            new_cmd = self.change_motors()
+            while(new_cmd != 's'):
+                new_cmd = self.change_motors()
         elif cmd == '':
             self.handle_input(self.prior_cmd, self.prior_args)
             return
@@ -103,7 +112,6 @@ class CLI():
                 seq_list = [seq_name for seq_name in self.robot.seq_list.keys() if cmd in seq_name and 'mix' not in seq_name]
             else:
                 seq_list = [seq_name for seq_name in self.robot.seq_list.keys() if cmd in seq_name]
-
             if len(seq_list) == 0:
                 print("No sequences matching name: %s" % (cmd))
                 return
@@ -203,6 +211,47 @@ class CLI():
                 args[1]), 'tower_3': float(args[1])}, 0, True)
         else:
             self.robot.goto_position({args[0]: float(args[1])}, 0, True)
+    
+    #allows the user to change the position of the robot using arrow keys. command is c
+    def change_motors(self):
+        moving_motor = input("Enter a motor ID to shift the motor (1, 2, 3, or 4). Press e to end: ")
+        while(moving_motor != 'e'):
+            #if one of the tower motors is being controlled
+            if(int(moving_motor) > 0 and int(moving_motor) < 4):
+                tower = 'tower_' + str(moving_motor)
+                print("\n\nUse the up/down arrow keys to move motor " + moving_motor +
+                    ".\nHit esc to stop moving the motor.\n\n")
+                key = ord(getch())
+                if(key == 27):
+                    getch()
+                    key = ord(getch())
+                    if(key == 65):
+                        current_pos = self.robot.get_indiv_motor_pos(tower)
+                        if(current_pos < 140):
+                            self.robot.goto_position({tower: float(current_pos+20)}, 0, True)
+                        else:
+                            self.robot.goto_position({tower: float(150)}, 0, True)
+                    elif(key == 66):
+                        current_pos = self.robot.get_indiv_motor_pos(tower)
+                        if(current_pos > -140):
+                            self.robot.goto_position({tower: float(current_pos-20)}, 0, True)
+                        else:
+                            self.robot.goto_position({tower: float(-150)}, 0, True)
+                    elif(key == 27):
+                        moving_motor = 'esc'
+                if(key == 101):
+                    moving_motor = 'e'
+        to_return = input("Press s to save your motor configuration, or m to move another motor: ")
+        return to_return
+        #return #str that determines if user is moving more motors or if user is saving motor config
+        
+
+
+
+            
+        
+
+
 
 
 
