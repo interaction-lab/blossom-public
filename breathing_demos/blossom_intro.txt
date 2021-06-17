@@ -1,0 +1,7 @@
+<speak>
+Hi! My name is Blossom. 
+<break time="2s"/> 
+I am a friend and I am here to help with breathing exercises.
+<break time="2s"/> 
+Hello!
+</speak>
