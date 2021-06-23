@@ -3,6 +3,7 @@ from .src import SequenceRobot
 from .src import CLI
 import threading
 from time import sleep
+import simpleaudio as sa
 
 
 class Blossom():
@@ -46,7 +47,7 @@ class Blossom():
             self.robot.goto_position({'tower_1': float(position), 'tower_2': float(
                 position), 'tower_3': float(position)}, duration, False)
         else:
-            self.robot.goto_position({motor_name: float(position)}, duration, False)
+            self.robot.goto_position({motor_name: float(position)}, duration, False)        
 
     def cli(self):
         self.interface.run_cli()
