@@ -11,3 +11,4 @@ PyYAML
 simpleaudio
 opencv-python
 getch
+PyQt5

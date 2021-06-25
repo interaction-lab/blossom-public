@@ -17,16 +17,15 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 # class school UI would have two instance vari schoolUI and blossom
 # init -> blossom start up and UI start up
 
+bl = Blossom(sequence_dir='../blossompy/src/sequences')
+
 class Ui_MainWindow(object):
 
-    def __init__(self):
-        bl = Blossom(sequence_dir='../blossompy/src/sequences')
+    def setupUi(self, MainWindow):
         bl.connect()  # safe init and connects to blossom and puts blossom in reset position
         bl.load_sequences()
         bl.do_sequence("breathing/exhale")
 
-
-    def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(689, 850)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -184,7 +183,6 @@ class Ui_MainWindow(object):
         play_obj2 = wave_obj2.play()
 
 if __name__ == "__main__":
-    import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
