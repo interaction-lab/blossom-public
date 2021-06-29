@@ -16,7 +16,7 @@ Here are two examples of Blossom robots:
 
 ## Setup Software Dependencies
 
-Make sure you're using [Python `3`]
+<!-- Make sure you're using [Python `3`]
 To check, run `python -V` or `python3 -V` in the terminal to check the version. As of now, this codebase was tested and works on `Python 3.5.2` on Ubuntu 16.04 and Mac.
 _The following steps will assume `python -V` reports with version `>3.x.x`. If it reports `2.x.x` then replace `python` in the following steps with `python3`_
 
@@ -33,7 +33,7 @@ Make a `venv` (virtual environment) in the top `blossom` directory and activate 
 ```
 python -m venv blossom_venv
 source blossom_venv/bin/activate
-```
+``` -->
 
 ### General Setup
 
