@@ -6,14 +6,14 @@ from time import sleep
 import simpleaudio as sa
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-# bl = Blossom(sequence_dir='../blossompy/src/sequences')
+bl = Blossom(sequence_dir='../blossompy/src/sequences')
 
 class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
-        # bl.connect()  # safe init and connects to blossom and puts blossom in reset position
-        # bl.load_sequences()
-        # bl.do_sequence("breathing/exhale")
+        bl.connect()  # safe init and connects to blossom and puts blossom in reset position
+        bl.load_sequences()
+        bl.do_sequence("breathing/exhale")
 
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(689, 850)
@@ -107,8 +107,16 @@ class Ui_MainWindow(object):
         bl.do_sequence("reset")
 
     def playIntro_clicked(self):
-        self.pushButton_2.setText("clicked")
+        # self.pushButton_2.setText("clicked")
         # play "breathing - intro" (in breathing demos)
+        filename = "../blossompy/media/blossom_backstory.wav"
+        wave_obj = sa.WaveObject.from_wave_file(filename)
+        play_obj = wave_obj.play()
+
+        bl.do_sequence("breathing/inhale")
+
+        bl.do_sequence("breathing/exhale")
+
 
 
     def startBreath_clicked(self):
@@ -130,9 +138,9 @@ class Ui_MainWindow(object):
         # self.pushButton_6.setText("clicked")
         # play sequence "inhale_counting" in breathing demos
 
-        bl.robot.speed = float(1)
+        # bl.robot.speed = float(1)
         play_obj = wave_obj.play()
-        bl.do_sequence("breathing/inhale")
+        # bl.do_sequence("breathing/inhale")
         sleep(1.2)
         play_obj1 = wave_obj1.play()
         sleep(1.2)
@@ -144,9 +152,9 @@ class Ui_MainWindow(object):
         # self.pushButton_7.setText("clicked")
         # play sequence "exhale_counting" in breathing demos
 
-        bl.robot.speed = float(1)
+        # bl.robot.speed = float(1)
         play_obj = wave_obj.play()
-        bl.do_sequence("breathing/exhale")
+        # bl.do_sequence("breathing/exhale")
         sleep(1.2)
         play_obj1 = wave_obj1.play()
         sleep(1.2)
