@@ -113,9 +113,9 @@ class Ui_MainWindow(object):
         wave_obj = sa.WaveObject.from_wave_file(filename)
         play_obj = wave_obj.play()
 
-        bl.do_sequence("breathing/inhale")
+        # bl.do_sequence("breathing/inhale")
 
-        bl.do_sequence("breathing/exhale")
+        # bl.do_sequence("breathing/exhale")
 
 
 
