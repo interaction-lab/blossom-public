@@ -31,7 +31,7 @@ class Ui_MainWindow(object):
         self.pushButton_2.setObjectName("pushButton_2")
 
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_3.setGeometry(QtCore.QRect(110, 170, 481, 51))
+        self.pushButton_3.setGeometry(QtCore.QRect(110, 380, 481, 51))
         self.pushButton_3.setObjectName("pushButton_3")
 
         self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
@@ -65,15 +65,15 @@ class Ui_MainWindow(object):
         # buttons added after original creation
 
         self.pushButton_11 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_11.setGeometry(QtCore.QRect(110, 240, 481, 51))
+        self.pushButton_11.setGeometry(QtCore.QRect(110, 170, 481, 51))
         self.pushButton_11.setObjectName("pushButton_11")
 
         self.pushButton_12 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_12.setGeometry(QtCore.QRect(110, 310, 481, 51))
+        self.pushButton_12.setGeometry(QtCore.QRect(110, 240, 481, 51))
         self.pushButton_12.setObjectName("pushButton_12")
 
         self.pushButton_13 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_13.setGeometry(QtCore.QRect(110, 380, 481, 51))
+        self.pushButton_13.setGeometry(QtCore.QRect(110, 310, 481, 51))
         self.pushButton_13.setObjectName("pushButton_13")
 
         # end of buttons added after original creation
@@ -144,6 +144,19 @@ class Ui_MainWindow(object):
         # bl.do_sequence("breathing/inhale")
         # bl.do_sequence("breathing/exhale")
 
+    # buttons added after original creation
+
+    def extraButton1_clicked(self):
+        self.pushButton_11.setText("clicked")
+
+    def extraButton2_clicked(self):
+        self.pushButton_12.setText("clicked")
+
+    def extraButton3_clicked(self):
+        self.pushButton_13.setText("clicked")
+
+    # end of buttons added after original creation
+
     def startBreath_clicked(self):
         # self.pushButton_3.setText("clicked")
         # play sequence "start breath"
@@ -206,19 +219,6 @@ class Ui_MainWindow(object):
         filename2 = "../blossompy/media/three.wav"
         wave_obj2 = sa.WaveObject.from_wave_file(filename2)
         play_obj2 = wave_obj2.play()
-
-    # buttons added after original creation
-
-    def extraButton1_clicked(self):
-        self.pushButton_11.setText("clicked")
-
-    def extraButton2_clicked(self):
-        self.pushButton_12.setText("clicked")
-
-    def extraButton3_clicked(self):
-        self.pushButton_13.setText("clicked")
-
-    # end of buttons added after original creation
 
 
 if __name__ == "__main__":
