@@ -17,8 +17,12 @@ Here are two examples of Blossom robots:
 ## Setup Software Dependencies
 
 Make sure you're using [Python `3`]
-To check, run `python -V` or `python3 -V` in the terminal to check the version. As of now, this codebase was tested and works on `Python 3.5.2` on Ubuntu 16.04 and Mac.
-_The following steps will assume `python -V` reports with version `>3.x.x`. If it reports `2.x.x` then replace `python` in the following steps with `python3`_
+
+To make sure you setup the dependencies without error, the easiest way is to use anaconda or virtualenv to create a virtual environment with python 3.8.5 installed. 
+
+Although the orignial blossompy codebase was tested with a lower version of python, in this version, we included a python-based UI using PyQt5, which does rely on more up-to-date python version. 
+
+The current codebase is being actively tested with python 3.8.5.
 
 Also ensure that [pip3 is installed](https://pip.pypa.io/en/stable/installing/).
 To install:\
@@ -34,6 +38,16 @@ Make a `venv` (virtual environment) in the top `blossom` directory and activate 
 python -m venv blossom_venv
 source blossom_venv/bin/activate
 ```
+
+For Anaconda user, you can run the following line to setup a virtual environment with the correct python verion
+
+```
+conda create -n blossom_env python=3.8.5 anaconda
+conda activate blossom_env
+```
+
+After setting up the virtual environment, the next step is to install all the required packages in the requirement.txt file, and more detailed instructions are included as below.
+
 
 ### General Setup
 
