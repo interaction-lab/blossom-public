@@ -62,6 +62,22 @@ class Ui_MainWindow(object):
         self.pushButton_10.setGeometry(QtCore.QRect(450, 640, 141, 131))
         self.pushButton_10.setObjectName("pushButton_10")
 
+        # buttons added after original creation
+
+        self.pushButton_11 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_11.setGeometry(QtCore.QRect(110, 240, 481, 51))
+        self.pushButton_11.setObjectName("pushButton_11")
+
+        self.pushButton_12 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_12.setGeometry(QtCore.QRect(110, 310, 481, 51))
+        self.pushButton_12.setObjectName("pushButton_12")
+
+        self.pushButton_13 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_13.setGeometry(QtCore.QRect(110, 380, 481, 51))
+        self.pushButton_13.setObjectName("pushButton_13")
+
+        # end of buttons added after original creation
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 689, 22))
@@ -101,6 +117,17 @@ class Ui_MainWindow(object):
         self.pushButton_10.setText(_translate("MainWindow", "Count \"three\""))
         self.pushButton_10.clicked.connect(self.countThree_clicked)
 
+        # buttons added after original creation
+
+        self.pushButton_11.setText(_translate("MainWindow", "Add text here"))
+        self.pushButton_11.clicked.connect(self.extraButton1_clicked)
+        self.pushButton_12.setText(_translate("MainWindow", "Add text here"))
+        self.pushButton_12.clicked.connect(self.extraButton2_clicked)
+        self.pushButton_13.setText(_translate("MainWindow", "Add text here"))
+        self.pushButton_13.clicked.connect(self.extraButton3_clicked)
+
+        # end of buttons added after original creation
+
     def reset_clicked(self):
         # self.pushButton.setText("clicked")
         # add function calls here!
@@ -114,9 +141,7 @@ class Ui_MainWindow(object):
         filename = "../blossompy/media/blossom_backstory.wav"
         wave_obj = sa.WaveObject.from_wave_file(filename)
         play_obj = wave_obj.play()
-
         # bl.do_sequence("breathing/inhale")
-
         # bl.do_sequence("breathing/exhale")
 
     def startBreath_clicked(self):
@@ -137,7 +162,6 @@ class Ui_MainWindow(object):
     def inhaleCount_clicked(self):
         # self.pushButton_6.setText("clicked")
         # play sequence "inhale_counting" in breathing demos
-
         # bl.robot.speed = float(1)
         play_obj = wave_obj.play()
         # bl.do_sequence("breathing/inhale")
@@ -150,7 +174,6 @@ class Ui_MainWindow(object):
     def exhaleCount_clicked(self):
         # self.pushButton_7.setText("clicked")
         # play sequence "exhale_counting" in breathing demos
-
         # bl.robot.speed = float(1)
         play_obj = wave_obj.play()
         # bl.do_sequence("breathing/exhale")
@@ -164,7 +187,6 @@ class Ui_MainWindow(object):
         # self.pushButton_8.setText("clicked")
         # play wave file riya sent
         # playsound("/Users/nataliehumber/Desktop/one.wav")
-
         filename = "../blossompy/media/one.wav"
         wave_obj = sa.WaveObject.from_wave_file(filename)
         play_obj = wave_obj.play()
@@ -173,7 +195,6 @@ class Ui_MainWindow(object):
         # self.pushButton_9.setText("clicked")
         # play wave file riya sent
         # playsound("/Users/nataliehumber/Desktop/two.wav")
-
         filename1 = "../blossompy/media/two.wav"
         wave_obj1 = sa.WaveObject.from_wave_file(filename1)
         play_obj1 = wave_obj1.play()
@@ -182,10 +203,22 @@ class Ui_MainWindow(object):
         # self.pushButton_10.setText("clicked")
         # play wave file riya sent
         # playsound("/Users/nataliehumber/Desktop/three.wav")
-
         filename2 = "../blossompy/media/three.wav"
         wave_obj2 = sa.WaveObject.from_wave_file(filename2)
         play_obj2 = wave_obj2.play()
+
+    # buttons added after original creation
+
+    def extraButton1_clicked(self):
+        self.pushButton_11.setText("clicked")
+
+    def extraButton2_clicked(self):
+        self.pushButton_12.setText("clicked")
+
+    def extraButton3_clicked(self):
+        self.pushButton_13.setText("clicked")
+
+    # end of buttons added after original creation
 
 
 if __name__ == "__main__":
