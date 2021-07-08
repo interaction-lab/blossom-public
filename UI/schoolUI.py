@@ -35,19 +35,19 @@ class Ui_MainWindow(object):
         self.pushButton_3.setObjectName("pushButton_3")
 
         self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_4.setGeometry(QtCore.QRect(360, 240, 231, 181))
+        self.pushButton_4.setGeometry(QtCore.QRect(360, 445, 231, 81))
         self.pushButton_4.setObjectName("pushButton_4")
 
         self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_5.setGeometry(QtCore.QRect(110, 240, 231, 181))
+        self.pushButton_5.setGeometry(QtCore.QRect(110, 445, 231, 81))
         self.pushButton_5.setObjectName("pushButton_5")
 
         self.pushButton_6 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_6.setGeometry(QtCore.QRect(110, 440, 231, 181))
+        self.pushButton_6.setGeometry(QtCore.QRect(110, 540, 231, 81))
         self.pushButton_6.setObjectName("pushButton_6")
 
         self.pushButton_7 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_7.setGeometry(QtCore.QRect(360, 440, 231, 181))
+        self.pushButton_7.setGeometry(QtCore.QRect(360, 540, 231, 81))
         self.pushButton_7.setObjectName("pushButton_7")
 
         self.pushButton_8 = QtWidgets.QPushButton(self.centralwidget)
