@@ -8,14 +8,14 @@ import simpleaudio as sa
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-# bl = Blossom(sequence_dir='../blossompy/src/sequences')
+bl = Blossom(sequence_dir='../blossompy/src/sequences')
 
 class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
-        # bl.connect()  # safe init and connects to blossom and puts blossom in reset position
-        # bl.load_sequences()
-        # bl.do_sequence("breathing/exhale")
+        bl.connect()  # safe init and connects to blossom and puts blossom in reset position
+        bl.load_sequences()
+        bl.do_sequence("breathing/exhale")
 
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(689, 850)
