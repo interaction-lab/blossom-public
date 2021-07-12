@@ -35,7 +35,7 @@ Mac: `brew install python3-venv`
 
 Make a `venv` (virtual environment) in the top `blossom` directory and activate it:
 ```
-python -m venv blossom_venv
+python3 -m venv blossom_venv
 source blossom_venv/bin/activate
 ```
 
