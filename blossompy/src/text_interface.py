@@ -6,6 +6,7 @@ from .sequencerobot import SequenceRobot
 import random, time
 import threading
 from getch import getch, pause
+import json
 import yaml
 #with open(r'..constants.yaml') as file:
     #constants = yaml.load(file, Loader=yaml.FullLoader)
@@ -97,9 +98,17 @@ class CLI():
         elif cmd == 'h':
             self.print_help()
         elif cmd == 'c':
+            all_pos = []
+            new_sequence = input('Please enter the name of sequence you would like to create.')
             new_cmd = self.change_motors()
             while(new_cmd != 's'):
                 new_cmd = self.change_motors()
+                if(new_cmd == 's'):
+                    new_cmd = input("\nEnter s to save this as your final sequence." + 
+                    "Enter p to add another position to this sequence.")
+                    new_pos = [{'dof':key,"pos":value} for key,value in self.robot.get_motor_pos().items()]
+                    all_pos.append({"positions":new_pos, "millis": 3000})
+            self.write_position_to_json(all_pos, new_sequence)
         elif cmd == '':
             self.handle_input(self.prior_cmd, self.prior_args)
             return
@@ -244,16 +253,23 @@ class CLI():
         to_return = input("Press s to save your motor configuration, or m to move another motor: ")
         return to_return
         #return #str that determines if user is moving more motors or if user is saving motor config
-        
-
-
-
-            
-        
-
-
-
-
+    
+    #allows user to save the robots current position to a json file
+    def write_position_to_json(self, all_pos, new_sequence):
+        new_sequence = new_sequence + "_sequence.json"
+        data = {"animation":new_sequence, "frame_list": all_pos}
+        json_str = json.dumps(data, indent=4)
+        print(json_str)
+        target_path = 'src/sequences/woody/'
+        if not os.path.exists(target_path):
+            try:
+               os.makedirs(target_path)
+            except Exception as e:
+                print(e)
+                raise
+        with open(os.path.join(target_path, new_sequence), 'w') as f:
+            json.dump(data, f)
+    
 
 # def main(args):
 #     """

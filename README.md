@@ -1,7 +1,7 @@
 # Blossom Package
 
-This python package includes all the basics necessary to run your
-Blossom robot to make it perform various gestures and sequences.
+This is a python package that includes all of the basic functions and files
+necessary to run your Blossom robot for human robot interaction. 
 
 ## About Blossom
 
