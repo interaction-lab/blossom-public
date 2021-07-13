@@ -5,8 +5,7 @@ from .config import RobotConfig
 from .sequencerobot import SequenceRobot
 import random, time
 import threading
-from getch import getch, pause
-import json
+from getch import getch
 import yaml
 #with open(r'..constants.yaml') as file:
     #constants = yaml.load(file, Loader=yaml.FullLoader)
