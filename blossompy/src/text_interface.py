@@ -272,7 +272,7 @@ class CLI():
                 print(e)
                 raise
         with open(os.path.join(target_path, new_sequence), 'w') as f:
-            json.dump(data, f)
+            json.dump(data, f, indent = 4)
     
 
 # def main(args):
