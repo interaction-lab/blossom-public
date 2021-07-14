@@ -141,7 +141,7 @@ class Ui_MainWindow(object):
         filename = "../blossompy/media/blossom_backstory.wav"
         wave_obj = sa.WaveObject.from_wave_file(filename)
         play_obj = wave_obj.play()
-        bl.do_sequence("sad/sad")
+        bl.do_sequence("backstory")
         # bl.do_sequence("breathing/inhale")
         # bl.do_sequence("breathing/exhale")
 
