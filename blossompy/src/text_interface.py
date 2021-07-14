@@ -7,6 +7,7 @@ import random, time
 import threading
 from getch import getch
 import yaml
+import json
 #with open(r'..constants.yaml') as file:
     #constants = yaml.load(file, Loader=yaml.FullLoader)
 
@@ -53,7 +54,7 @@ class CLI():
         print("\nRunning CLI")
         while(1):
             # get command string
-            cmd_str = input("Enter a command ('l' for a list, 'h' for help):")
+            cmd_str = input("Enter a command ('l' for a list, 'h' for help, 'c' to create a new sequence):")
             if cmd_str =="exit": break
             cmd_string = re.split('/| ', cmd_str)
             cmd = cmd_string[0]
@@ -97,17 +98,7 @@ class CLI():
         elif cmd == 'h':
             self.print_help()
         elif cmd == 'c':
-            all_pos = []
-            new_sequence = input('Please enter the name of sequence you would like to create.')
-            new_cmd = self.change_motors()
-            while(new_cmd != 's'):
-                new_cmd = self.change_motors()
-                if(new_cmd == 's'):
-                    new_cmd = input("\nEnter s to save this as your final sequence." + 
-                    "Enter p to add another position to this sequence.")
-                    new_pos = [{'dof':key,"pos":value} for key,value in self.robot.get_motor_pos().items()]
-                    all_pos.append({"positions":new_pos, "millis": 3000})
-            self.write_position_to_json(all_pos, new_sequence)
+            self.prompt_new_sequence()
         elif cmd == '':
             self.handle_input(self.prior_cmd, self.prior_args)
             return
@@ -220,6 +211,22 @@ class CLI():
         else:
             self.robot.goto_position({args[0]: float(args[1])}, 0, True)
     
+    def prompt_new_sequence(self):
+        all_pos = []
+        millis = 0
+        new_sequence = input('Please enter the name of sequence you would like to create: ')
+        new_cmd = self.change_motors()
+        while(new_cmd != 's'):
+            new_cmd = self.change_motors()
+            if(new_cmd == 's'):
+                new_pos = [{'dof':key,"pos":(value/50+3)} for key,value in self.robot.get_motor_pos().items()]
+                all_pos.append({"positions":new_pos, "millis": millis})
+                millis+=3000
+                new_cmd = input("\nEnter w to save this as your final sequence." + 
+                " Enter p to add another position to this sequence: ")
+        self.write_position_to_json(all_pos, new_sequence)
+
+    
     #allows the user to change the position of the robot using arrow keys. command is c
     def change_motors(self):
         moving_motor = input("Enter a motor ID to shift the motor (1, 2, 3, or 4). Press e to end: ")
@@ -228,7 +235,7 @@ class CLI():
             if(int(moving_motor) > 0 and int(moving_motor) < 4):
                 tower = 'tower_' + str(moving_motor)
                 print("\n\nUse the up/down arrow keys to move motor " + moving_motor +
-                    ".\nHit esc to stop moving the motor.\n\n")
+                    ".\nPress e to stop moving the motor.\n\n")
                 key = ord(getch())
                 if(key == 27):
                     getch()
@@ -245,8 +252,6 @@ class CLI():
                             self.robot.goto_position({tower: float(current_pos-20)}, 0, True)
                         else:
                             self.robot.goto_position({tower: float(-150)}, 0, True)
-                    elif(key == 27):
-                        moving_motor = 'esc'
                 if(key == 101):
                     moving_motor = 'e'
         to_return = input("Press s to save your motor configuration, or m to move another motor: ")
@@ -259,7 +264,7 @@ class CLI():
         data = {"animation":new_sequence, "frame_list": all_pos}
         json_str = json.dumps(data, indent=4)
         print(json_str)
-        target_path = 'src/sequences/woody/'
+        target_path = './src/sequences/woody/'
         if not os.path.exists(target_path):
             try:
                os.makedirs(target_path)
