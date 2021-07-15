@@ -41,7 +41,7 @@ source blossom_venv/bin/activate
 _Ubuntu_: You may need to run:
 
 ```
-sudo apt-get install build-essential libssl-dev libffi-dev python3-dev
+sudo apt-get install build-essential libssl-dev libffi-dev python3-dev libasound2-dev python3-pyqt5
 ```
 and
 ```

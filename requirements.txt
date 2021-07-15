@@ -12,4 +12,3 @@ simpleaudio
 opencv-python==4.3.0.38
 getch
 py-getch
-PyQt5
