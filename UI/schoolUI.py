@@ -15,7 +15,6 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         bl.connect()  # safe init and connects to blossom and puts blossom in reset position
         bl.load_sequences()
-        bl.do_sequence("breathing/exhale")
 
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(689, 850)
@@ -78,6 +77,18 @@ class Ui_MainWindow(object):
 
         # end of buttons added after original creation
 
+        self.pushButton_14 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_14.setGeometry(QtCore.QRect(110, 800, 141, 131))
+        self.pushButton_14.setObjectName("pushButton_14")
+
+        self.pushButton_15 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_15.setGeometry(QtCore.QRect(280, 800, 141, 131))
+        self.pushButton_15.setObjectName("pushButton_15")
+
+        self.pushButton_16 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_16.setGeometry(QtCore.QRect(450, 800, 141, 131))
+        self.pushButton_16.setObjectName("pushButton_16")
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 689, 22))
@@ -96,37 +107,43 @@ class Ui_MainWindow(object):
 
         self.pushButton.setText(_translate("MainWindow", "Reset"))
         self.pushButton.clicked.connect(self.reset_clicked)
-        self.pushButton_2.setText(_translate("MainWindow", "Play Introduction"))
-        self.pushButton_2.clicked.connect(self.playIntro_clicked)
-        self.pushButton_3.setText(_translate("MainWindow", "Start Breath"))
-        self.pushButton_3.clicked.connect(self.startBreath_clicked)
+        self.pushButton_2.setText(_translate("MainWindow", "1_Play Introduction"))
+        self.pushButton_2.clicked.connect(self.intro_nameasking_clicked)
+        self.pushButton_3.setText(_translate("MainWindow", "5_Personalization_BecomingFriends"))
+        self.pushButton_3.clicked.connect(self.personalization_becomingfriends_clicked)
+        self.pushButton_5.setText(_translate("MainWindow", "6_Personalization_answer"))
+        self.pushButton_5.clicked.connect(self.personalization_becomingfriends_answer_clicked)
+        self.pushButton_4.setText(_translate("Ma    inWindow", "7_Personalization_DressingBlossom"))
+        self.pushButton_4.clicked.connect(self.personalization_dressingblossom_clicked)
+        self.pushButton_6.setText(_translate("MainWindow", "8_DressingBlossom_Done"))
+        self.pushButton_6.clicked.connect(self.personalization_dressingblossom_done_clicked)
+        self.pushButton_7.setText(_translate("MainWindow", "9_Breathing_Exercise_Intro_p1"))
+        self.pushButton_7.clicked.connect(self.Breathing_Exercise_Intro_p1_clicked)
 
-        self.pushButton_4.setText(_translate("MainWindow", "Exhale"))
-        self.pushButton_4.clicked.connect(self.exhale_clicked)
-        self.pushButton_5.setText(_translate("MainWindow", "Inhale"))
-        self.pushButton_5.clicked.connect(self.inhale_clicked)
-        self.pushButton_6.setText(_translate("MainWindow", "Inhale with Counting"))
-        self.pushButton_6.clicked.connect(self.inhaleCount_clicked)
-        self.pushButton_7.setText(_translate("MainWindow", "Exhale with Counting"))
-        self.pushButton_7.clicked.connect(self.exhaleCount_clicked)
-
-        self.pushButton_8.setText(_translate("MainWindow", "Count \"one\""))
-        self.pushButton_8.clicked.connect(self.countOne_clicked)
-        self.pushButton_9.setText(_translate("MainWindow", "Count \"two\""))
-        self.pushButton_9.clicked.connect(self.countTwo_clicked)
-        self.pushButton_10.setText(_translate("MainWindow", "Count \"three\""))
-        self.pushButton_10.clicked.connect(self.countThree_clicked)
+        self.pushButton_8.setText(_translate("MainWindow", "10_Exercise_Intro_p2"))
+        self.pushButton_8.clicked.connect(self.breathing_exercise_intro_p2_clicked)
+        self.pushButton_9.setText(_translate("MainWindow", "11_Exercise_Yes"))
+        self.pushButton_9.clicked.connect(self.breathing_exercise_yes_clicked)
+        self.pushButton_10.setText(_translate("MainWindow", "12_Exercise_1"))
+        self.pushButton_10.clicked.connect(self.breathing_exercise_1_clicked)
 
         # buttons added after original creation
 
-        self.pushButton_11.setText(_translate("MainWindow", "Add text here"))
-        self.pushButton_11.clicked.connect(self.extraButton1_clicked)
-        self.pushButton_12.setText(_translate("MainWindow", "Add text here"))
-        self.pushButton_12.clicked.connect(self.extraButton2_clicked)
-        self.pushButton_13.setText(_translate("MainWindow", "Add text here"))
-        self.pushButton_13.clicked.connect(self.extraButton3_clicked)
+        self.pushButton_11.setText(_translate("MainWindow", "2_intro_makefriends"))
+        self.pushButton_11.clicked.connect(self.intro_makefriends_clicked)
+        self.pushButton_12.setText(_translate("MainWindow", "3_Introduction_MakeFriends_Yes"))
+        self.pushButton_12.clicked.connect(self.intro_makefriends_yes_clicked)
+        self.pushButton_13.setText(_translate("MainWindow", "4_Introduction_MakeFriends_No"))
+        self.pushButton_13.clicked.connect(self.intro_makefriends_no_clicked)
 
         # end of buttons added after original creation
+
+        self.pushButton_14.setText(_translate("MainWindow", "13_Breathing_2"))
+        self.pushButton_14.clicked.connect(self.breathing_exercise_2_clicked)
+        self.pushButton_15.setText(_translate("MainWindow", "14_Breathing_3"))
+        self.pushButton_15.clicked.connect(self.breathing_exercise_3_clicked)
+        self.pushButton_16.setText(_translate("MainWindow", "15_Breathing_End"))
+        self.pushButton_16.clicked.connect(self.breathing_exercise_end_clicked)
 
     def reset_clicked(self):
         # self.pushButton.setText("clicked")
@@ -135,91 +152,103 @@ class Ui_MainWindow(object):
         # play sequence "reset"
         bl.do_sequence("reset")
 
-    def playIntro_clicked(self):
+    def intro_nameasking_clicked(self):
         # self.pushButton_2.setText("clicked")
         # play "breathing - intro" (in breathing demos)
-        filename = "../blossompy/media/blossom_backstory.wav"
+        filename = "../blossompy/media/amazon_demo/Introduction_NameAsking.wav"
         wave_obj = sa.WaveObject.from_wave_file(filename)
         play_obj = wave_obj.play()
-        bl.do_sequence("backstory")
-        # bl.do_sequence("breathing/inhale")
-        # bl.do_sequence("breathing/exhale")
+        bl.do_sequence("amazon_demo/Introduction_NameAsking")
+
 
     # buttons added after original creation
 
-    def extraButton1_clicked(self):
-        self.pushButton_11.setText("clicked")
+    def intro_makefriends_clicked(self):
+        filename = "../blossompy/media/amazon_demo/Introduction_MakeFriends.wav"
+        wave_obj = sa.WaveObject.from_wave_file(filename)
+        play_obj = wave_obj.play()
+        bl.do_sequence("amazon_demo/Introduction_MakeFriends")
 
-    def extraButton2_clicked(self):
-        self.pushButton_12.setText("clicked")
+    def intro_makefriends_yes_clicked(self):
+        filename = "../blossompy/media/amazon_demo/Introduction_MakeFriends_Yes.wav"
+        wave_obj = sa.WaveObject.from_wave_file(filename)
+        play_obj = wave_obj.play()
+        bl.do_sequence("amazon_demo/Introduction_MakeFriends_Yes")
 
-    def extraButton3_clicked(self):
-        self.pushButton_13.setText("clicked")
+    def intro_makefriends_no_clicked(self):
+        filename = "../blossompy/media/amazon_demo/Introduction_MakeFriends_No.wav"
+        wave_obj = sa.WaveObject.from_wave_file(filename)
+        play_obj = wave_obj.play()
+        bl.do_sequence("amazon_demo/Introduction_MakeFriends_No")
 
     # end of buttons added after original creation
 
-    def startBreath_clicked(self):
-        # self.pushButton_3.setText("clicked")
-        # play sequence "start breath"
-        bl.do_sequence("breathing/startbreath")
-
-    def exhale_clicked(self):
-        # self.pushButton_4.setText("clicked")
-        # play sequence "exhale"
-        bl.do_sequence("breathing/exhale")
-
-    def inhale_clicked(self):
-        # self.pushButton_5.setText("clicked")
-        # play sequence "inhale"
-        bl.do_sequence("breathing/inhale")
-
-    def inhaleCount_clicked(self):
-        # self.pushButton_6.setText("clicked")
-        # play sequence "inhale_counting" in breathing demos
-        # bl.robot.speed = float(1)
-        play_obj = wave_obj.play()
-        # bl.do_sequence("breathing/inhale")
-        sleep(1.2)
-        play_obj1 = wave_obj1.play()
-        sleep(1.2)
-        play_obj2 = wave_obj2.play()
-        sleep(1.2)
-
-    def exhaleCount_clicked(self):
-        # self.pushButton_7.setText("clicked")
-        # play sequence "exhale_counting" in breathing demos
-        # bl.robot.speed = float(1)
-        play_obj = wave_obj.play()
-        # bl.do_sequence("breathing/exhale")
-        sleep(1.2)
-        play_obj1 = wave_obj1.play()
-        sleep(1.2)
-        play_obj2 = wave_obj2.play()
-        sleep(1.2)
-
-    def countOne_clicked(self):
-        # self.pushButton_8.setText("clicked")
-        # play wave file riya sent
-        # playsound("/Users/nataliehumber/Desktop/one.wav")
-        filename = "../blossompy/media/one.wav"
+    def personalization_becomingfriends_clicked(self):
+        filename = "../blossompy/media/amazon_demo/Personalization_BecomingFriends.wav"
         wave_obj = sa.WaveObject.from_wave_file(filename)
         play_obj = wave_obj.play()
+        bl.do_sequence("amazon_demo/Personalization_BecomingFriends")
 
-    def countTwo_clicked(self):
-        # self.pushButton_9.setText("clicked")
-        # play wave file riya sent
-        # playsound("/Users/nataliehumber/Desktop/two.wav")
-        filename1 = "../blossompy/media/two.wav"
-        wave_obj1 = sa.WaveObject.from_wave_file(filename1)
-        play_obj1 = wave_obj1.play()
+    def personalization_dressingblossom_clicked(self):
+        filename = "../blossompy/media/amazon_demo/Personalization_DressingBlossom.wav"
+        wave_obj = sa.WaveObject.from_wave_file(filename)
+        play_obj = wave_obj.play()
+        bl.do_sequence("amazon_demo/Personalization_DressingBlossom")
 
-    def countThree_clicked(self):
-        # self.pushButton_10.setText("clicked")
-        # play wave file riya sent
-        # playsound("/Users/nataliehumber/Desktop/three.wav")
-        filename2 = "../blossompy/media/three.wav"
-        wave_obj2 = sa.WaveObject.from_wave_file(filename2)
-        play_obj2 = wave_obj2.play()
+    def personalization_becomingfriends_answer_clicked(self):
+        filename = "../blossompy/media/amazon_demo/Personalization_BecomingFriends_Answer.wav"
+        wave_obj = sa.WaveObject.from_wave_file(filename)
+        play_obj = wave_obj.play()
+        bl.do_sequence("amazon_demo/Personalization_BecomingFriends_Answer")
+
+    def personalization_dressingblossom_done_clicked(self):
+        filename = "../blossompy/media/amazon_demo/Personalization_DressingBlossom_Done.wav"
+        wave_obj = sa.WaveObject.from_wave_file(filename)
+        play_obj = wave_obj.play()
+        bl.do_sequence("amazon_demo/Personalization_DressingBlossom_Done")
+
+    def Breathing_Exercise_Intro_p1_clicked(self):
+        filename = "../blossompy/media/amazon_demo/Breathing_Exercise_Intro_p1.wav"
+        wave_obj = sa.WaveObject.from_wave_file(filename)
+        play_obj = wave_obj.play()
+        bl.do_sequence("amazon_demo/Breathing_Exercise_Intro_p1")
+
+    def breathing_exercise_intro_p2_clicked(self):
+        filename = "../blossompy/media/amazon_demo/Breathing_Exercise_Intro_p2.wav"
+        wave_obj = sa.WaveObject.from_wave_file(filename)
+        play_obj = wave_obj.play()
+        bl.do_sequence("amazon_demo/Breathing_Exercise_Intro_p2")
+
+    def breathing_exercise_yes_clicked(self):
+        filename = "../blossompy/media/amazon_demo/Breathing_Exercise_Yes.wav"
+        wave_obj = sa.WaveObject.from_wave_file(filename)
+        play_obj = wave_obj.play()
+        bl.do_sequence("amazon_demo/Breathing_Exercise_Yes")
+
+    def breathing_exercise_1_clicked(self):
+        filename = "../blossompy/media/amazon_demo/Breathing_Exercise_1.wav"
+        wave_obj = sa.WaveObject.from_wave_file(filename)
+        play_obj = wave_obj.play()
+        bl.do_sequence("amazon_demo/Breathing_Exercise_1")
+
+    def breathing_exercise_2_clicked(self):
+        filename = "../blossompy/media/amazon_demo/Breathing_Exercise_2.wav"
+        wave_obj = sa.WaveObject.from_wave_file(filename)
+        play_obj = wave_obj.play()
+        bl.do_sequence("amazon_demo/Breathing_Exercise_2")
+
+    def breathing_exercise_3_clicked(self):
+        filename = "../blossompy/media/amazon_demo/Breathing_Exercise_3.wav"
+        wave_obj = sa.WaveObject.from_wave_file(filename)
+        play_obj = wave_obj.play()
+        bl.do_sequence("amazon_demo/Breathing_Exercise_3")
+
+    def breathing_exercise_end_clicked(self):
+        filename = "../blossompy/media/amazon_demo/Breathing_Exercise_End.wav"
+        wave_obj = sa.WaveObject.from_wave_file(filename)
+        play_obj = wave_obj.play()
+        bl.do_sequence("amazon_demo/Breathing_Exercise_End")
+
 
 
 if __name__ == "__main__":
