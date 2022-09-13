@@ -1,0 +1,75 @@
+/* GLOBAL */
+body, html {
+    	color:#CCC;
+   	background-color:black;
+    	font-family:monospace;
+	font-size: 12px;
+}
+
+#header {
+	padding-bottom: 25px;
+	font-size: 20px;
+}
+
+#submit-input-container{
+	overflow: hidden
+}
+
+#play-seq-name, #record-seq-name, #play-btn, #record-btn, 
+#stop-record-btn, #record-time, #save-playback-btn, #edit-playback-btn,
+#playback-seq-name, #reset-btn{
+	float: left;
+	padding-left: 5px;
+	vertical-align: middle;
+}
+
+.slide-container{
+	width: 600px;	
+	padding-top: 10px;
+}
+
+.ui-slide-container{
+	width: 350px;
+	padding-top: 10px;
+}
+
+.ui-slider {
+	height: 15px;
+	background: #fff;
+	border-radius: 0%;
+	margin-bottom: 10px;
+}
+
+.ui-slider .ui-slider-handle {
+	cursor: default;
+	border-radius: 0%;
+	height: 15px;
+	width: 5px;
+	margin-left:0px;
+	margin-top:2.5px;
+	background: #a9a9a9;
+}
+
+.slider {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 350px;
+	height: 15px;
+	background: #ffffff; /*white bg*/
+	outline: none;
+	-webkit-transition: .5s;
+}
+
+.slider::-webkit-slider-thumb {
+	-webkit-appearance: none; 
+	appearance: none;
+	width: 5px;
+	height: 15px; 
+	background: #a9a9a9; /*grey*/
+}
+
+#connected {
+	display:none;
+}
+
+

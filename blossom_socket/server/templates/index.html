@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<head>
+  <title>Blossom Sequence</title>
+  	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+  	<link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'>
+	<link rel='stylesheet' href='static/css/style.css'>
+</head>
+<body>
+  <div id="header">play blossom sequence</div>
+    <!--Not Connected: will dissapear when blossom is initated-->
+    <div id='not-connected'>
+	<button id="power-on-btn" onclick="powerOn()">power on</button>
+	<div id="wmsg-load-seq"></div>
+    </div>
+
+   <!--Connected: will appear when blossom is initiated-->	
+    <div id='connected'>
+	<button id="power-off-btn" onclick="powerOff()">power off</button>
+
+	<div id="submit-input-container">
+		<input type="text" id="play-seq-name">
+		<button type="button" id="play-btn" onclick="playSequence($('#play-seq-name').val())">play</button>
+		<button type="button" id="load-btn" onclick="loadSequence(false)">load</button>
+		<button type="button" id="reset-btn" onclick="reset(); playSequence('reset');">reset</button>
+	</div>
+
+	<div id="submit-input-container">
+		<input type="text" id="record-seq-name">
+
+		<div id='not-recording'>
+		<button type="button" id="record-btn" onclick="recordSequence()">record</button>
+		</div>
+
+		<div id='recording'>
+		<button type="button" id="stop-record-btn" onclick="stopSequence()">stop</button>
+		</div>	
+
+		<div id="record-time">millis: <span id="timer">0</span></div>
+	</div>
+	<div id="wmsg"></div>
+
+	<div id="playback">
+	<div class="ui-slide-container">
+	<span id="slide-vals">sequence name: <span id="slide-seq-name"></span>, millis: <span id="slide-millis">0</span>, frame: <span id="slide-frame">0</span></span>
+	<div id="playback-slider"></div>
+	</div>
+
+	<div id="submit-input-container">
+		<input type="text" id="playback-seq-name">
+		<button type="button" id="save-playback-btn" onclick="savePlayback()">save</button>
+		<button type="button" id="edit-playback-btn" onclick="updatePlayback($('#playback-slider').slider('value'),false,true)">edit</button>
+		<button type="button" id="play-playback-btn" onclick="playSequence('temp_playback')">play</button>
+	<div id="wmsg-playback"></div>
+	</div>
+	</div>
+
+	<div class="slide-container">
+	<span id="slide-vals">tower_1: [DEG] <span id="slide-tower_1-deg">100.0</span> [RAD] <span id="slide-tower_1-rad">5.0</span></span><br>
+ 	<input type="range" min="-140" max="140" value="100" step="0.01" class="slider" oninput="updateMotorPos('tower_1'); updateSliderVal(this.value, 'tower_1')" id="tower_1-input">
+	</div>	
+
+	<div class="slide-container">
+	<span id="slide_vals">tower_2: [DEG] <span id="slide-tower_2-deg">100.0</span> [RAD] <span id="slide-tower_2-rad">5.0</span></span><br>
+  	<input type="range" min="-140" max="140" value="100" step="0.01" class="slider" oninput="updateMotorPos('tower_2'); updateSliderVal(this.value,'tower_2')" id="tower_2-input">
+	</div>
+
+	<div class="slide-container">
+	<span id="slide-vals">tower_3: [DEG] <span id="slide-tower_3-deg">100.0</span> [RAD] <span id="slide-tower_3-rad">5.0</span></span><br>
+  	<input type="range" min="-140" max="140" value="100" step="0.01" class="slider" oninput="updateMotorPos('tower_3'); updateSliderVal(this.value,'tower_3')" id="tower_3-input">
+	</div>
+
+	<div class="slide-container">
+	<span id="slide-vals">base: [DEG] <span id="slide-base-deg">0.0</span> [RAD] <span id="slide-base-rad">3.0</span></span><br>
+  	<input type="range" min="-140" max="140" value="0" step="0.01" class="slider" oninput="updateMotorPos('base'); updateSliderVal(this.value,'base')" id="base-input">
+	</div>
+
+	<div class="slide-container">
+	<span id="slide-vals">ears: [DEG] <span id="slide-ears-deg">-100.0</span> [RAD] <span id="slide-ears-rad">1.0</span></span><br>
+	<input type="range" min="-140" max="140" value="-100" step="0.01" class="slider" oninput="updateMotorPos('ears'); updateSliderVal(this.value,'ears')" id="ears-input">
+    </div>
+	
+	<script src="static/js/controller.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<script src="static/node_modules/socket.io-client/dist/socket.io.js"></script>
+	<script> 
+	$(function() {
+    		$('#playback-slider').slider({value:0, min:0, max:500, step:10, slide:function(event,ui){updatePlayback(ui.value,false,false);}})
+	});
+	</script>
+</body>
+</html>
