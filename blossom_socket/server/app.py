@@ -13,16 +13,16 @@ socketio = SocketIO(app, ping_timeout=600, ping_interval=5)
 Payload.max_decode_packets = 50
 
 #import the blossom robot (basic motor ctrls)
-sys.path.insert(0,"/home/pi/blossom-public")
+sys.path.insert(0,"../..")
 # import main as Blossom
 from blossompy import Blossom
 
 #sys.path.insert(0,"/home/pi/blossom-public/blossompy/src")
 #from sequence import Sequence
 
-# @app.route('/favicon.ico') 
-# def favicon(): 
-#     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route('/')
 def index():
@@ -36,7 +36,7 @@ def connect():
 	print("initializing robot")
 #	robot = Blossom.Blossom()
 #	robot.connect() #safe init the robot to reset position
-	robot = Blossom(sequence_dir='/home/pi/blossom-public/blossompy/src/sequences')
+	robot = Blossom(sequence_dir='/../../blossompy/src/sequences')
 	robot.connect() # safe init and connects to blossom and puts blossom in reset position
 
 	#load sequences from directory
@@ -70,7 +70,7 @@ def stop_sequence(input):
 
 	#create json object/python dict
 	global frames_list
-	robot_dir = "/home/pi/blossom-public/blossompy/src/sequences/" + robot.name + "/"
+	robot_dir = "../../blossompy/src/sequences/" + robot.name + "/"
 	seq_fn = robot_dir + seq_name + '_sequence.json'
 	with open(seq_fn,'w') as seq_file:
 		json.dump({'animation': seq_name, 'frame_list': frames_list[:-15]}, seq_file, indent=2)
@@ -87,7 +87,7 @@ def stop_sequence(input):
 def save_playback(input):
 	seq_name = input['sequence_name']
 
-	robot_dir = "/home/pi/blossom-public/blossompy/src/sequences/" + robot.name + "/"
+	robot_dir = "../../blossompy/src/sequences/" + robot.name + "/"
 	seq_fn = robot_dir + seq_name + '_sequence.json'
 	with open(seq_fn,'w') as seq_file:
 		json.dump({'animation': seq_name, 'frame_list': input['frame_list']}, seq_file, indent=2)
@@ -103,7 +103,7 @@ def retrieve_seq_file(input):
 	seq_name = input['sequence_name']
 
 	#retrieve the json file
-	robot_dir = "/home/pi/blossom-public/blossompy/src/sequences/" + robot.name + "/"
+	robot_dir = "../../blossompy/src/sequences/" + robot.name + "/"
 	seq_file = open(robot_dir + seq_name + '_sequence.json', 'r')
 	data = json.load(seq_file)
 	socketio.emit('get_seq_file',data)
@@ -127,5 +127,4 @@ def update_motor(motor_name,position):
 	print("motor has updated")
 
 if __name__ == '__main__':
-    app.run(host='10.25.17.223', port=5000) #insert the ip address of the raspberry pi
-
+    app.run(host='127.0.0.1', port=5000) #insert the ip address of the raspberry pi
