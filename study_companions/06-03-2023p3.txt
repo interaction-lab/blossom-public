@@ -1,0 +1,10 @@
+Start Session03/06/2023, 17:15:44
+sad/sad_downcast
+03/06/2023, 17:16:14
+happy/happy_lookingup
+03/06/2023, 17:16:44
+fear/fear_startled
+03/06/2023, 17:17:14
+breathing/inhale
+03/06/2023, 17:17:44
+breathing/exhale

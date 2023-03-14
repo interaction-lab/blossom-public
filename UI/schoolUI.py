@@ -8,7 +8,7 @@ import simpleaudio as sa
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-bl = Blossom(sequence_dir='../blossompy/src/sequences')
+bl = Blossom(sequence_dir='../blossompy/src/sequences', name="woody")
 
 class Ui_MainWindow(object):
 
@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
         bl.load_sequences()
 
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(689, 850)
+        MainWindow.resize(689, 150)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
@@ -90,13 +90,13 @@ class Ui_MainWindow(object):
         self.pushButton_16.setObjectName("pushButton_16")
 
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 689, 22))
-        self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        # self.menubar = QtWidgets.QMenuBar(MainWindow)
+        # self.menubar.setGeometry(QtCore.QRect(0, 0, 689, 22))
+        # self.menubar.setObjectName("menubar")
+        # MainWindow.setMenuBar(self.menubar)
+        # self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        # self.statusbar.setObjectName("statusbar")
+        # MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -256,5 +256,6 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-    MainWindow.show()
+    # MainWindow.show()
+    MainWindow.showFullScreen()
     sys.exit(app.exec_())
