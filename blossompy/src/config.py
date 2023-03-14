@@ -19,21 +19,26 @@ class RobotConfig(object):
         # catch no available ports
         if (len(self.ports) == 0):
             self.ports = ['']
+        elif (len(self.ports)>1):
+            self.ports = [self.ports[0]]
         self.configs = {
             'woody': {
                 'controllers': {
                     'my_dxl_controller': {
                         'sync_read': False,
-                        'attached_motors': ['tower', 'bases', 'head'],
+                        # 'sync_read': 'auto',
+                        # 'attached_motors': ['tower', 'bases', 'head', 'arms'],
+                        'attached_motors': ['tower', 'arms'],
                         'port': 'auto',
                         'baudrate': 1000000,
                         'protocol': 2
                     }
                 },
                 'motorgroups': {
-                    'tower': ['tower_1', 'tower_2', 'tower_3'],
-                    'bases': ['base'],
-                    'head': ['ears']
+                    'tower': ['tower_1', 'tower_2', 'tower_3','base'],
+                    # 'bases': ['base'],
+                    # 'head': ['ears'],
+                    'arms': ['left_arm', 'right_arm', 'ears','tail']
                 },
                 'motors': {
                     'tower_1': {
@@ -71,6 +76,27 @@ class RobotConfig(object):
                         'angle_limit': [50, 130.0],
                         'offset': 0.0
                     },
+                    'left_arm': {
+                        'orientation': 'direct',
+                        'type': 'XL-320',
+                        'id': 6,
+                        'angle_limit': [-150.0,150.0],
+                        'offset': 0.0
+                    },
+                    'right_arm': {
+                        'orientation': 'direct',
+                        'type': 'XL-320',
+                        'id': 7,
+                        'angle_limit': [-150.0,150.0],
+                        'offset': 0.0
+                    },
+                    'tail': {
+                        'orientation': 'direct',
+                        'type': 'XL-320',
+                        'id': 8,
+                        'angle_limit': [-150.0,150.0],
+                        'offset': 0.0
+                    }
                 }
             },
             'test': {
@@ -111,32 +137,28 @@ class RobotConfig(object):
                 print("No ports available")
                 sys.exit(1)
             try:
-                if (names[0] != 'blossom' and names[0] != 'vyo'):
+                if (names[0]!='blossom' and names[0]!='vyo'):
                     dxl_io = pd.Dxl320IO(port)
                 else:
-                    if (names[0] == 'vyo'):
-                        dxl_io = pd.DxlIO(port, 57600)
+                    if (names[0]=='vyo'):
+                        dxl_io = pd.DxlIO(port,57600)
                     else:
                         dxl_io = pd.DxlIO(port)
-                try:
-                    scanned_ids = dxl_io.scan(range(20))
-                except Exception as e:
-                    scanned_ids = dxl_io.scan(range(20))
-                    print("scanned_ids: ", scanned_ids)
-
+                scanned_ids = dxl_io.scan(range(20))
             # handle unopenable serial port
             except SerialException as e:
                 print(e)
                 print("Error opening port, try:")
                 print("sudo chmod 777 " + port)
-                sys.exit(1)
+                # sys.exit(1)
             # general exception
             except Exception as e:
                 print("general exception caught (please update the except statement with the exception)", e)
                 scanned_ids = []
 
             # print found motors
-            if (len(scanned_ids) == 0):
+            if (len(scanned_ids)==0):
+                print("No motors found on %s" % port)
                 continue
             else:
                 print("Motors for %s:" % port, scanned_ids)
@@ -156,7 +178,7 @@ class RobotConfig(object):
                 if configs[i] not in used_configs and valid_port:
                     controller = list(config['controllers'].keys())[0]
                     config['controllers'][controller]['port'] = port
-                    used_configs.append(configs[i])
+                    used_configs.append(configs[i]) 
                     break
             else:
                 print("No robot found for port", port)
@@ -208,3 +230,4 @@ class RobotConfig(object):
 
         # return new config
         return config
+
