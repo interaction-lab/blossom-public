@@ -76,6 +76,11 @@ class Ui_MainWindow(object):
         self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_4.setGeometry(QtCore.QRect(360, 325, 230, 65))
         self.pushButton_4.setObjectName("Unpause")
+        
+        self.placeholderLabel = QtWidgets.QLabel(self.centralwidget)
+        self.placeholderLabel.setGeometry(QtCore.QRect(110, 380, 480, 20))
+        self.placeholderLabel.setObjectName("Placeholder")
+        self.placeholderLabel.setText("This is a placeholder text.")
 
         
         MainWindow.setCentralWidget(self.centralwidget)
