@@ -21,7 +21,7 @@ class Window(QMainWindow):
 		self.UiComponents()
 
 		# showing all the widgets
-		self.show()
+		self.showFullScreen()
 
 	# method for widgets
 	def UiComponents(self):
