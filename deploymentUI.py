@@ -9,47 +9,15 @@ import simpleaudio as sa
 from PyQt6 import QtCore, QtGui, QtWidgets
 import time
 
-
-
-def run(runfile):
-  with open(runfile,"r") as rnf:
-    exec(rnf.read())
-    
-def secs_to_minsec(secs: int):
-    mins = secs // 60
-    secs = secs % 60
-    minsec = f'{mins:02}:{secs:02}'
-    return minsec
-
-DURATION_INT = 1500
     
   
   
 class Ui_MainWindow(object):
-  
-  #  def __init__(self):
-  #      super().__init__()
-
- 
-     
-        
- #   def startTimer(self):
- #       self.time_left_int = DURATION_INT
-
- #       self.myTimer.timeout.connect(self.timerTimeout)
-  #      self.myTimer.start(1000)
-
- #   def timerTimeout(self):
- #       self.time_left_int -= 1
-#
- #      if self.time_left_int == 0:
- #           self.time_left_int = DURATION_INT
-
- #       self.update_gui()
-        
- #   def update_gui(self):
- #       minsec = secs_to_minsec(self.time_left_int)
- #       self.timerLabel.setText(minsec)
+    def __init__(self):
+        self.start_pressed = False
+        self.pause_pressed = False
+        self.continue_pressed = False
+        self.end_pressed = False
         
 
     def setupUi(self, MainWindow):
@@ -62,26 +30,27 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
 
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(110, 240, 230, 65))
+        self.pushButton.setGeometry(QtCore.QRect(110, 220, 230, 65))
         self.pushButton.setObjectName("Start")
 
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_2.setGeometry(QtCore.QRect(360, 240, 230, 65))
+        self.pushButton_2.setGeometry(QtCore.QRect(360, 220, 230, 65))
         self.pushButton_2.setObjectName("Pause")
 
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_3.setGeometry(QtCore.QRect(110, 325, 230, 65))
+        self.pushButton_3.setGeometry(QtCore.QRect(110, 305, 230, 65))
         self.pushButton_3.setObjectName("End")
 
         self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_4.setGeometry(QtCore.QRect(360, 325, 230, 65))
+        self.pushButton_4.setGeometry(QtCore.QRect(360, 305, 230, 65))
         self.pushButton_4.setObjectName("Unpause")
-        
+
         self.placeholderLabel = QtWidgets.QLabel(self.centralwidget)
         self.placeholderLabel.setGeometry(QtCore.QRect(110, 380, 480, 20))
         self.placeholderLabel.setObjectName("Placeholder")
         self.placeholderLabel.setText("This is a placeholder text.")
 
+        
         
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -109,32 +78,40 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
 
         self.pushButton.setText(_translate("MainWindow", "Start"))
-        #self.pushButton.clicked.connect(self.start_clicked)
+        self.pushButton.clicked.connect(self.start_clicked)
         self.pushButton_2.setText(_translate("MainWindow", "Stop"))
-        #self.pushButton_2.clicked.connect(self.stop_clicked)
+        self.pushButton_2.clicked.connect(self.stop_clicked)
         self.pushButton_3.setText(_translate("MainWindow", "Pause"))
-       # self.pushButton_3.clicked.connect(self.pause_clicked)
+        self.pushButton_3.clicked.connect(self.pause_clicked)
         self.pushButton_4.setText(_translate("MainWindow", "Unpause"))
-       # self.pushButton_4.clicked.connect(self.unpause_clicked)
+        self.pushButton_4.clicked.connect(self.unpause_clicked)
   
 
     def start_clicked(self):
        start()
-       if self.start_button_pressed:
+       if self.start_pressed:
             QtWidgets.QMessageBox.warning(self, "Error", "The 'Start' button has already been pressed.")
        self.start_pressed = True
 
     def pause_clicked(self):
         pause()
-        self.pause_pressed = False
+        if self.pause_pressed:
+            QtWidgets.QMessageBox.warning(self, "Error", "The 'Pause' button has already been pressed.")
+        self.pause_pressed = True
+        self.continue_pressed = False
 
     def continue_clicked(self):
         cont()
+        if self.continue_pressed:
+            QtWidgets.QMessageBox.warning(self, "Error", "The 'Continue' button has already been pressed.")
+        self.continue_pressed = True
         self.pause_pressed = False
 
     def end_clicked(self):
         end()
-        self.start_pressed = False
+        if self.end_pressed:
+            QtWidgets.QMessageBox.warning(self, "Error", "The 'Continue' button has already been pressed.")
+        self.end_pressed = True
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
@@ -143,5 +120,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec())
-    self.start_pressed = False
-    self.pause_pressed = False
+
