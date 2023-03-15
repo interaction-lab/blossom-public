@@ -38,18 +38,6 @@ def main():
         continue_time = ct.strftime("%d/%m/%Y %H:%M:%S")
         continue_times.append(continue_time)
 
-    start()
-    time.sleep(4)
-    pause()
-    time.sleep(7)
-    cont()
-    time.sleep(6)
-    pause()
-    time.sleep(2)
-    cont()
-    time.sleep(5)
-    end()
-
 
 
 if __name__ == "__main__":
