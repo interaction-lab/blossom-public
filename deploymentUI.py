@@ -84,31 +84,31 @@ class Ui_MainWindow(object):
         self.pushButton_3.setText(_translate("MainWindow", "Pause"))
         self.pushButton_3.clicked.connect(self.pause_clicked)
         self.pushButton_4.setText(_translate("MainWindow", "Unpause"))
-        self.pushButton_4.clicked.connect(self.unpause_clicked)
+        self.pushButton_4.clicked.connect(self.continue_clicked)
   
 
     def start_clicked(self):
-       start()
+       tracking_file.start()
        if self.start_pressed:
             QtWidgets.QMessageBox.warning(self, "Error", "The 'Start' button has already been pressed.")
        self.start_pressed = True
 
     def pause_clicked(self):
-        pause()
+        tracking_file.pause()
         if self.pause_pressed:
             QtWidgets.QMessageBox.warning(self, "Error", "The 'Pause' button has already been pressed.")
         self.pause_pressed = True
         self.continue_pressed = False
 
     def continue_clicked(self):
-        cont()
+        tracking_file.cont()
         if self.continue_pressed:
             QtWidgets.QMessageBox.warning(self, "Error", "The 'Continue' button has already been pressed.")
         self.continue_pressed = True
         self.pause_pressed = False
 
-    def end_clicked(self):
-        end()
+    def stop_clicked(self):
+        tracking_file.end()
         if self.end_pressed:
             QtWidgets.QMessageBox.warning(self, "Error", "The 'Continue' button has already been pressed.")
         self.end_pressed = True
