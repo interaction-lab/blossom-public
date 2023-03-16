@@ -9,12 +9,7 @@ from time import sleep
 import simpleaudio as sa
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
-<<<<<<< HEAD
-bl = Blossom(sequence_dir='../blossompy/src/sequences', name="test")
-=======
 bl = Blossom(sequence_dir='../blossompy/src/sequences', name="woody")
->>>>>>> 61637cc242380acf8c60769492be6996c13786a3
 
 class Ui_MainWindow(object):
 

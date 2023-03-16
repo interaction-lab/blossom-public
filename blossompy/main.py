@@ -18,8 +18,8 @@ class Blossom():
         self.robot = SequenceRobot(self.name, self.configs[self.name], sequence_dir=self.sequence_dir)
         self.configs.pop(self.name)
 
-        print("creating CLI")
-        self.interface = CLI(self.robot)
+        # print("creating CLI")
+        # self.interface = CLI(self.robot)
 
     def load_sequences(self):
         self.robot.load_all_sequences()
