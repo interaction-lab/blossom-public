@@ -6,6 +6,7 @@ from PyQt5.QtCore import *
 import sys
 from log_session import SessionLogger
 from IdleBehaviors import BlossomController
+from record_thread import VideoRecorder
 
 
 class Window(QMainWindow):
@@ -24,6 +25,9 @@ class Window(QMainWindow):
 
 		# initialize blossom controller
 		self.bc = BlossomController()
+
+		#initialize video recording
+		self.vr = VideoRecorder()
 
 		# calling method
 		self.UiComponents()
@@ -102,9 +106,6 @@ class Window(QMainWindow):
 		# adding action to timer
 		timer.timeout.connect(self.showTime)
 
-		# adding action to timer
-		# timer.timeout.connect(self.moveBlossom)
-
 		# update the timer every tenth second
 		timer.start(1000)
 
@@ -126,6 +127,10 @@ class Window(QMainWindow):
 				# setting text to the label
 				self.label.setText("Completed !!!! ")
 
+				# upload files
+				self.bc.reset()
+				self.logger.store_log()
+
 		if self.start:
 			# getting text from count
 			minutes = str(int(self.count / 60))
@@ -140,6 +145,9 @@ class Window(QMainWindow):
 	def start_action(self):
 		# making flag true
 		self.start = True
+
+		# start recording
+		self.vr.start_recording()
 
 		# disable start button
 		self.start_button.setEnabled(False)
@@ -156,21 +164,29 @@ class Window(QMainWindow):
 		self.logger.log_event("start")
 
 	def pause_action(self):
-
+		# if paused flag is false, we are not currently paused and should start the pause
 		if not self.paused:
 			# making flag false
 			self.start = False
 			self.paused = True
+
+			# stop recording
+			self.vr.stop_recording()
 			
 			# change button text to resume
 			self.pause_button.setText("Resume Session")
 			
 			# log pause event
 			self.logger.log_event("pause")
+		# if paused flag is true, we are already paused and should resume the session
 		else:
-			# making flag true
+			# reset start and paused flags
 			self.start = True
 			self.paused = False
+
+			# start recording
+			self.vr.start_recording()
+
 			# change button text to resume
 			self.pause_button.setText("Pause Session")
 
@@ -202,6 +218,10 @@ class Window(QMainWindow):
 		# disable pause and reset button
 		self.pause_button.setEnabled(False)
 		self.reset_button.setEnabled(False)
+
+		# upload video
+		self.logger.store_log()
+		self.bc.disconnect()
 
 	def moveBlossom(self):
 		if self.start:
