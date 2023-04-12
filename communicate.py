@@ -61,7 +61,8 @@ movements = {
     "head_tilt_left": [100, 0.1, 100, 0.1, 35, 0.4, 5, 0.1, 100, 0.1],
     "head_tilt_right": [100, 0.1, 10, 0.4, 100, 0.1, 5, 0.1, 100, 0.1],
     "reset":  [100, 0.1, 100, 0.3, 100, 0.3, 5, 0.1, 100, 0.1],
-    "move_ear": [100, 0.1, 100, 0.3, 100, 0.3, 5, 0.1, 30, 0.3]
+    "exhale": [40, 1],
+    "inhale": [100,1]
 }
 
 # Initialize list of desired sequences and length of sequences
@@ -74,16 +75,21 @@ for seq in DESIRED_SEQUENCES_TIME:
     print("Seq_name:", seq, "\tSeq_time:", DESIRED_SEQUENCES_TIME[seq])
     
 # Initialize list of idle sequences
-IDLE_SEQUENCES = ["head_tilt_left", "reset"]
+IDLE_SEQUENCES = ["exhale", "inhale"]
      
 # Play sequence by name in "movements" dictionary
 def play_sequence(sequence_name):
-    print("Playing sequence:", sequence_name)
+    #print("Playing sequence:", sequence_name)
     bl.motor_goto('tower_1', movements[sequence_name][0],movements[sequence_name][1])
     bl.motor_goto('tower_2', movements[sequence_name][2], movements[sequence_name][3])
     bl.motor_goto('tower_3', movements[sequence_name][4], movements[sequence_name][5])
     bl.motor_goto('base', movements[sequence_name][6], movements[sequence_name][7])
     bl.motor_goto('ears', movements[sequence_name][8], movements[sequence_name][9])
+
+def play_sequence_idle(sequence_name):
+    print("Playing sequence:", sequence_name)
+    bl.motor_goto("all",movements[sequence_name][0],movements[sequence_name][1])
+    time.sleep(0.5)
 
 # Publishing MQTT Message using the proper format onto the defined topic, PUBLISH_TOPIC
 def publish_message(MESSAGE):
@@ -144,18 +150,18 @@ def on_message_received(topic, payload):
                 
             stream.write(audio_data)
             audio_data = polly_stream.read(READ_CHUNK)
-             
+        publish_message("Done!")
+    
+    # Reset motor positions and let user send new message
+    play_sequence("reset")
+    
+    # Set Speaking state to False
+    speak_event.clear()
+    
     # Stop the audio and close devices
     stream.stop_stream()
     stream.close()
     audio.terminate()
-    
-    # Reset motor positions and let user send new message
-    play_sequence("reset")
-    publish_message("Done!")
-    
-    # Set Speaking state to False
-    speak_event.clear()
     
 # Define ENDPOINT, CLIENT_ID, PATH_TO_CERTIFICATE, PATH_TO_PRIVATE_KEY, PATH_TO_AMAZON_ROOT_CA_1, MESSAGE, TOPIC, and RANGE
 ENDPOINT = "a387vttjfd7bvs-ats.iot.us-west-2.amazonaws.com"
@@ -202,6 +208,6 @@ while True:
         
         # If 5 seconds have passed, play next idle sequence
         if time2 - time1 > 5:
-            play_sequence(IDLE_SEQUENCES[test_seq])
+            play_sequence_idle(IDLE_SEQUENCES[test_seq])
             test_seq = (test_seq + 1) % len(IDLE_SEQUENCES)
             time1 = time.perf_counter()
