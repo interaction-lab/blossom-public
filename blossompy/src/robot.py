@@ -59,20 +59,20 @@ class Robot(object):
             duration       how long to allow motors to reach position (millis)
             wait        wait for the motors to reach goal before new cmd
         """
-        print("Moving", motor_pos)
+        #print("Moving", motor_pos)
         # activate motors
         if(self.compliant):
             self.set_compliant(False)
 
         # try going to position
         try:
-            print("Sending move command: ",motor_pos, duration, wait)
+            #print("Sending move command: ",motor_pos, duration, wait)
             self.robot.goto_position(motor_pos, control='dummy', duration=duration, wait=wait)
-            print("returning from move, at position:", self.get_motor_pos())
+            #print("returning from move, at position:", self.get_motor_pos())
         # motor doesn't exist or otherwise not able to move
         # TODO: handle this better
         except AttributeError as e:
-            print("Could not move: " + str(motor_pos))
+            #print("Could not move: " + str(motor_pos))
             ##print(f"Error was: {e}")
             pass
 

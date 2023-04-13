@@ -32,6 +32,8 @@ READ_CHUNK = 4096
 CHANNELS = 1
 BYTES_PER_SAMPLE = 2
 
+io.LogLevel(5)
+
 # Suppress PyAudio errors and warnings
 ERROR_HANDLER_FUNC = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
 def py_error_handler(filename, line, function, err, fmt):
@@ -52,8 +54,8 @@ bl = Blossom(sequence_dir='sequences/')
 bl.connect()  # safe init and connects to blossom and puts blossom in reset position
 
 # Configure user topics
-SUBSCRIBE_TOPIC = "pausang2211_mqtt/sub"
-PUBLISH_TOPIC = "pausang2211_mqtt/pub"
+SUBSCRIBE_TOPIC = "abhi-singh_mqtt/sub"
+PUBLISH_TOPIC = "abhi-singh_mqtt/pub"
 
 # Store sequences
 movements = {
@@ -95,8 +97,29 @@ def play_sequence_idle(sequence_name):
 def publish_message(MESSAGE):
     data = "{}".format(MESSAGE)
     message = {"msg" : data}
-    mqtt_connection.publish(topic=PUBLISH_TOPIC, payload=json.dumps(message), qos=mqtt.QoS.AT_LEAST_ONCE)
+    print("Publishing")
+    mqtt_connection_for_pub.publish(topic=PUBLISH_TOPIC, payload=json.dumps(message), qos=mqtt.QoS.AT_LEAST_ONCE)
     print("Published: '" + json.dumps(message) + "' to the topic: " + "'" + PUBLISH_TOPIC + "'")
+    
+
+def calculate_audio_length(message, audio_duration):
+    # Synthesize message using AWS Polly
+    try:
+        response = polly.synthesize_speech(Text=message,
+                                           VoiceId="Joanna",
+                                           LanguageCode="en-US",
+                                           OutputFormat="pcm",
+                                           SampleRate=str(SAMPLE_RATE))
+    except (BotoCoreError, ClientError) as error:
+        print(error)
+        sys.exit(-1)
+                    
+    test_data = response["AudioStream"].read()
+    num_samples = len(test_data) // 2
+    audio_duration[0] = num_samples / SAMPLE_RATE
+    
+    print("Audio duration:", audio_duration[0])
+
 
 # Speaking function: uses AWS Polly for TTS and movements of Blossom motors
 def on_message_received(topic, payload):
@@ -110,6 +133,10 @@ def on_message_received(topic, payload):
     
     # Reset motor position
     play_sequence("reset")
+    
+    #audio_duration = [0]
+    #audio_thr = threading.Thread(target=calculate_audio_length, args=(message,audio_duration,))
+    #audio_thr.start()
     
     # Synthesize message using AWS Polly
     try:
@@ -128,6 +155,8 @@ def on_message_received(topic, payload):
                     channels=CHANNELS,
                     rate=SAMPLE_RATE,
                     output=True)
+    
+    #audio_thr.join()
     
     SEQ_NUM = 0      # Keep track of speaking sequence index
     
@@ -150,7 +179,95 @@ def on_message_received(topic, payload):
                 
             stream.write(audio_data)
             audio_data = polly_stream.read(READ_CHUNK)
-        publish_message("Done!")
+    print("Sending done message")
+    publish_message("Done!")
+    print("Finished sending done message")
+    """
+    publish_message("Done!")
+    with response["AudioStream"] as polly_stream:
+        play_sequence(DESIRED_SEQUENCES[SEQ_NUM])     # Play first sequence
+        seq_timer_start = time.perf_counter()         # Track time that first sequence played
+        audio_data = polly_stream.read(READ_CHUNK)    # Speak
+        tot_timer_start = time.perf_counter()
+        not_done = True
+        
+        # As long as there is more words to speak
+        while audio_data:
+            seq_timer_end = time.perf_counter()       # Get current time
+            
+            # if the amount of time that passed since sequence played is longer than length of sequence,
+            # play a new sequence
+            if seq_timer_end - seq_timer_start > DESIRED_SEQUENCES_TIME[DESIRED_SEQUENCES[SEQ_NUM]]:
+                SEQ_NUM = (SEQ_NUM + 1) % len(DESIRED_SEQUENCES)     # Update sequence index
+                play_sequence(DESIRED_SEQUENCES[SEQ_NUM])            # Play next sequence
+                seq_timer_start = time.perf_counter()                # Update time that first sequence played
+                
+            stream.write(audio_data)
+            audio_data = polly_stream.read(READ_CHUNK)
+    """
+    
+    """
+    with response["AudioStream"] as polly_stream:
+        play_sequence(DESIRED_SEQUENCES[SEQ_NUM])     # Play first sequence
+        seq_timer_start = time.perf_counter()         # Track time that first sequence played
+        audio_data = polly_stream.read(READ_CHUNK)    # Speak
+        tot_timer_start = time.perf_counter()
+        not_done = True
+        
+        # As long as there is more words to speak
+        while audio_data:
+            seq_timer_end = time.perf_counter()       # Get current time
+            if not_done and audio_duration[0] != 0:
+                print("Sending done after", seq_timer_end - tot_timer_start, "seconds!")
+                not_done = False
+                publish_message("Done!")
+            
+            # if the amount of time that passed since sequence played is longer than length of sequence,
+            # play a new sequence
+            if seq_timer_end - seq_timer_start > DESIRED_SEQUENCES_TIME[DESIRED_SEQUENCES[SEQ_NUM]]:
+                SEQ_NUM = (SEQ_NUM + 1) % len(DESIRED_SEQUENCES)     # Update sequence index
+                play_sequence(DESIRED_SEQUENCES[SEQ_NUM])            # Play next sequence
+                seq_timer_start = time.perf_counter()                # Update time that first sequence played
+                
+                
+            stream.write(audio_data)
+            audio_data = polly_stream.read(READ_CHUNK)
+        if not_done:
+            print("Since it was not done, send done message")
+            publish_message("Done!")
+    """
+    
+    """
+    with response["AudioStream"] as polly_stream:
+        play_sequence(DESIRED_SEQUENCES[SEQ_NUM])     # Play first sequence
+        seq_timer_start = time.perf_counter()         # Track time that first sequence played
+        audio_data = polly_stream.read(READ_CHUNK)    # Speak
+        tot_timer_start = time.perf_counter()
+        not_done = True
+        
+        # As long as there is more words to speak
+        while audio_data:
+            seq_timer_end = time.perf_counter()       # Get current time
+            if not_done:
+                audio_duration_perct = audio_duration[0] * 0.8
+            
+            # if the amount of time that passed since sequence played is longer than length of sequence,
+            # play a new sequence
+            if seq_timer_end - seq_timer_start > DESIRED_SEQUENCES_TIME[DESIRED_SEQUENCES[SEQ_NUM]]:
+                SEQ_NUM = (SEQ_NUM + 1) % len(DESIRED_SEQUENCES)     # Update sequence index
+                play_sequence(DESIRED_SEQUENCES[SEQ_NUM])            # Play next sequence
+                seq_timer_start = time.perf_counter()                # Update time that first sequence played
+            if audio_duration != 0 and seq_timer_end - tot_timer_start >= audio_duration_perct and not_done:
+                print("Sending done after", seq_timer_end - tot_timer_start, "seconds!")
+                not_done = False
+                publish_message("Done!")
+                
+            stream.write(audio_data)
+            audio_data = polly_stream.read(READ_CHUNK)
+        if not_done:
+            print("Since it was not done, send done message")
+            publish_message("Done!")
+    """
     
     # Reset motor positions and let user send new message
     play_sequence("reset")
@@ -187,12 +304,24 @@ mqtt_connection = mqtt_connection_builder.mtls_from_path(
             clean_session=False,
             keep_alive_secs=6
             )
+mqtt_connection_for_pub = mqtt_connection_builder.mtls_from_path(
+            endpoint=ENDPOINT,
+            cert_filepath=PATH_TO_CERTIFICATE,
+            pri_key_filepath=PATH_TO_PRIVATE_KEY,
+            client_bootstrap=client_bootstrap,
+            ca_filepath=PATH_TO_AMAZON_ROOT_CA_1,
+            client_id=CLIENT_ID,
+            clean_session=False,
+            keep_alive_secs=6
+            )
 print("Connecting to {} with client ID '{}'...".format(
         ENDPOINT, CLIENT_ID))
 # Make the connect() call
 connect_future = mqtt_connection.connect()
+connect_future_for_pub = mqtt_connection_for_pub.connect()
 # Future.result() waits until a result is available
 connect_future.result()
+connect_future_for_pub.result()
 print("Connected!")
 sub_future, packet_id = mqtt_connection.subscribe(topic=SUBSCRIBE_TOPIC,qos=mqtt.QoS.AT_LEAST_ONCE,callback=on_message_received)
 
@@ -200,6 +329,7 @@ sub_results = sub_future.result()
 
 time1 = time.perf_counter()     # Start time of idle sequence
 test_seq = 0                    # Track index of idle sequences
+publish_message("Done!")
 while True:
     # Listen only if it is not speaking
     if not speak_event.is_set():
