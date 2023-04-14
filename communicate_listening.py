@@ -49,13 +49,17 @@ switch = True
 # Use thread Event to toggle between Speak/Listen states
 speak_event = threading.Event()
 
+idle_event = threading.Event()
+idle_event.set()
+
 # Initialize blossom
 bl = Blossom(sequence_dir='sequences/')
 bl.connect()  # safe init and connects to blossom and puts blossom in reset position
 
 # Configure user topics
-SUBSCRIBE_TOPIC = "abhi-singh_mqtt/sub"
-PUBLISH_TOPIC = "abhi-singh_mqtt/pub"
+SUBSCRIBE_TOPIC = "shriyau_mqtt/sub"
+PUBLISH_TOPIC = "shriyau_mqtt/pub"
+SUBSCRIBE_IDLE_TOPIC = "shriyau_mqtt/idle"
 
 # Store sequences
 movements = {
@@ -93,13 +97,12 @@ def play_sequence_idle(sequence_name):
     bl.motor_goto("all",movements[sequence_name][0],movements[sequence_name][1])
     time.sleep(0.5)
 
-
 # Publishing MQTT Message using the proper format onto the defined topic, PUBLISH_TOPIC
 def publish_message(MESSAGE):
     data = "{}".format(MESSAGE)
     message = {"msg" : data}
     print("Publishing")
-    mqtt_connection_pub.publish(topic=PUBLISH_TOPIC, payload=json.dumps(message), qos=mqtt.QoS.AT_LEAST_ONCE)[0].add_done_callback(publishCallback)
+    mqtt_connection_for_pub.publish(topic=PUBLISH_TOPIC, payload=json.dumps(message), qos=mqtt.QoS.AT_LEAST_ONCE)
     print("Published: '" + json.dumps(message) + "' to the topic: " + "'" + PUBLISH_TOPIC + "'")
     
 
@@ -180,10 +183,9 @@ def on_message_received(topic, payload):
                 
             stream.write(audio_data)
             audio_data = polly_stream.read(READ_CHUNK)
-        print("Sending done message")
-        publish_message("Done!")
-        #createNewPubConnection()
-        print("Finished sending done message")
+    print("Sending done message")
+    publish_message("Done!")
+    print("Finished sending done message")
     """
     publish_message("Done!")
     with response["AudioStream"] as polly_stream:
@@ -282,6 +284,22 @@ def on_message_received(topic, payload):
     stream.close()
     audio.terminate()
     
+def on_idle_message_received(topic, payload):
+    time2 = time.perf_counter()
+    
+    if(idle_event.is_set()):
+        event.clear()
+    
+    elif(not idle_event.is_set()):
+        event.set()
+        
+        # If 5 seconds have passed, play next idle sequence
+    if time2 - time1 > 5:
+        play_sequence_idle(IDLE_SEQUENCES[test_seq])
+        test_seq = (test_seq + 1) % len(IDLE_SEQUENCES)
+        time1 = time.perf_counter()
+    
+    
 # Define ENDPOINT, CLIENT_ID, PATH_TO_CERTIFICATE, PATH_TO_PRIVATE_KEY, PATH_TO_AMAZON_ROOT_CA_1, MESSAGE, TOPIC, and RANGE
 ENDPOINT = "a387vttjfd7bvs-ats.iot.us-west-2.amazonaws.com"
 CLIENT_ID = "testDevice"
@@ -291,12 +309,6 @@ PATH_TO_AMAZON_ROOT_CA_1 = "/home/cbt-deployment/certs/AmazonRootCA1.pem"
 MESSAGE = "Hello World"
 TOPIC = "test"
 RANGE = 20
-
-def printConnectionInterrupted(self):
-    print("Connection Interrupted")
-
-def printConnectionResumed(self):
-    print("Connection Resumed")
 
 # Spin up resources
 event_loop_group = io.EventLoopGroup(1)
@@ -308,61 +320,44 @@ mqtt_connection = mqtt_connection_builder.mtls_from_path(
             pri_key_filepath=PATH_TO_PRIVATE_KEY,
             client_bootstrap=client_bootstrap,
             ca_filepath=PATH_TO_AMAZON_ROOT_CA_1,
-            client_id=CLIENT_ID+"35",
+            client_id=CLIENT_ID,
             clean_session=False,
-            keep_alive_secs=100
+            keep_alive_secs=6
             )
-mqtt_connection_pub = mqtt_connection_builder.mtls_from_path(
+mqtt_connection_for_pub = mqtt_connection_builder.mtls_from_path(
             endpoint=ENDPOINT,
             cert_filepath=PATH_TO_CERTIFICATE,
             pri_key_filepath=PATH_TO_PRIVATE_KEY,
             client_bootstrap=client_bootstrap,
             ca_filepath=PATH_TO_AMAZON_ROOT_CA_1,
-            client_id=CLIENT_ID+"15",
+            client_id=CLIENT_ID,
             clean_session=False,
-            keep_alive_secs=100,
-            on_connection_interrupted=printConnectionInterrupted,
-            on_connection_resumed=printConnectionResumed
-            )  
+            keep_alive_secs=6
+            )
 print("Connecting to {} with client ID '{}'...".format(
         ENDPOINT, CLIENT_ID))
 # Make the connect() call
 connect_future = mqtt_connection.connect()
-connect_future_pub = mqtt_connection_pub.connect()
+connect_future_for_pub = mqtt_connection_for_pub.connect()
 # Future.result() waits until a result is available
-connect_future.result()
-connect_future_pub.result()
+#connect_future.result()
+connect_future_for_pub.result()
 print("Connected!")
-
-def printConnectionInterrupted(conn, e):
-    print("Connection Interrupted")
-    print(e)
-
-def printConnectionResumed(connection, return_code, session_present):
-    print("Connection Resumed")
-    print(return_code)
-
-def printSomething(self):
-    print("done")
-
-def publishCallback(self):
-    print("Published")
-
 sub_future, packet_id = mqtt_connection.subscribe(topic=SUBSCRIBE_TOPIC,qos=mqtt.QoS.AT_LEAST_ONCE,callback=on_message_received)
+idle_future, idle_id = mqtt_connection.subscribe(topic=SUBSCRIBE_IDLE_TOPIC,qos=mqtt.QoS.AT_LEAST_ONCE,callback=on_idle_message_received)
+
 
 sub_results = sub_future.result()
 
 time1 = time.perf_counter()     # Start time of idle sequence
 test_seq = 0                    # Track index of idle sequences
-#publish_message("Done!")
+publish_message("Done!")
 while True:
+    
+    if idle_event.is_set():
+        idle_results = idle_future.result()
     # Listen only if it is not speaking
     if not speak_event.is_set():
         sub_results = sub_future.result()
-        time2 = time.perf_counter()
-        
-        # If 5 seconds have passed, play next idle sequence
-        if time2 - time1 > 5:
-            play_sequence_idle(IDLE_SEQUENCES[test_seq])
-            test_seq = (test_seq + 1) % len(IDLE_SEQUENCES)
-            time1 = time.perf_counter()
+        play_sequence(DESIRED_SEQUENCES[0])
+        time.sleep(5)           
