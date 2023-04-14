@@ -22,6 +22,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from timeit import default_timer
 import threading
 
+ParticipantID = ""
+
 # Set up AWS Polly
 session = boto3.Session()
 polly = session.client("polly")
@@ -54,8 +56,8 @@ bl = Blossom(sequence_dir='sequences/')
 bl.connect()  # safe init and connects to blossom and puts blossom in reset position
 
 # Configure user topics
-SUBSCRIBE_TOPIC = "abhi-singh_mqtt/sub"
-PUBLISH_TOPIC = "abhi-singh_mqtt/pub"
+SUBSCRIBE_TOPIC = ParticipantID + "_mqtt/sub"
+PUBLISH_TOPIC = ParticipantID + "_mqtt/pub"
 
 # Store sequences
 movements = {
@@ -284,7 +286,7 @@ def on_message_received(topic, payload):
     
 # Define ENDPOINT, CLIENT_ID, PATH_TO_CERTIFICATE, PATH_TO_PRIVATE_KEY, PATH_TO_AMAZON_ROOT_CA_1, MESSAGE, TOPIC, and RANGE
 ENDPOINT = "a387vttjfd7bvs-ats.iot.us-west-2.amazonaws.com"
-CLIENT_ID = "testDevice"
+CLIENT_ID = ParticipantID
 PATH_TO_CERTIFICATE = "/home/cbt-deployment/certs/certificate.pem.crt"
 PATH_TO_PRIVATE_KEY = "/home/cbt-deployment/certs/private.pem.key"
 PATH_TO_AMAZON_ROOT_CA_1 = "/home/cbt-deployment/certs/AmazonRootCA1.pem"

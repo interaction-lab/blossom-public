@@ -4182,4 +4182,229 @@ Published: '{"msg": "Done!"}' to the topic: 'abhi-singh_mqtt/pub'
 Finished sending done message
 Playing sequence: exhale
 Published
-I apologize for any confusion earlier. As an AI language model, I cannot be a licensed therapist because I am not human and therefore do not have the necessary training or qualifications to provide therapy services in real life. However, my responses are based on therapeutic techniques used by licensed therapists that can help you explore coping strategies to manage stressors and challenges in your life.
+I apologize for any confusion earlier. As an AI language model, I cannot be a licensed therapist because I am not human and therefore do not have the necessary training or qualifications to provide therapy services in real life. However, my responses are based on therapeutic techniques used by licensed therapists that can help you explore coping strategies to manage stressors and challenges in your life.Motors for /dev/ttyUSB0: [1, 2, 3, 4]
+Couldn't find motor 5:  ears
+Couldn't find motor 6:  left_arm
+Couldn't find motor 7:  right_arm
+Couldn't find motor 8:  tail
+Connecting to robot
+Starting Safe Initialization
+Reseting position to:  {'tower_1': 50, 'tower_2': 50, 'tower_3': 50, 'base': 0, 'ears': 100}
+Loaded sequences -  0
+Init Complete
+creating CLI
+Seq_name: head_tilt_left 	Seq_time: 0.7000000000000001
+Seq_name: reset 	Seq_time: 0.7999999999999999
+Seq_name: head_tilt_right 	Seq_time: 0.7
+Connecting to a387vttjfd7bvs-ats.iot.us-west-2.amazonaws.com with client ID 'testDevice'...
+Connected!
+Playing sequence: exhale
+Playing sequence: inhale
+That's great to hear, what has you feeling excited today?
+<class 'str'>
+Sending done message
+Publishing
+Published: '{"msg": "Done!"}' to the topic: 'abhi-singh_mqtt/pub'
+Finished sending done message
+Playing sequence: exhale
+Published
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+That's great to hear! Can you tell me more about what is making you feel excited?
+<class 'str'>
+Sending done message
+Publishing
+Published: '{"msg": "Done!"}' to the topic: 'abhi-singh_mqtt/pub'
+Finished sending done message
+Playing sequence: exhale
+Published
+Playing sequence: inhale
+That sounds really positive. What are the specific things that seem to be working well for you right now? It can be helpful to identify these so we can build on them as coping strategies in times of stress or difficulty.
+<class 'str'>
+Sending done message
+Publishing
+Published: '{"msg": "Done!"}' to the topic: 'abhi-singh_mqtt/pub'
+Finished sending done message
+Playing sequence: exhale
+Published
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Okay, let's try to break it down. Are there any specific tasks or responsibilities that are going well for you right now? Or perhaps relationships with people in your life who are supportive and helpful? It can be good to pinpoint these areas of success so we can focus on using them as strengths when faced with challenges later on.
+<class 'str'>
+Sending done message
+Publishing
+Published: '{"msg": "Done!"}' to the topic: 'abhi-singh_mqtt/pub'
+Finished sending done message
+Playing sequence: exhale
+Published
+Playing sequence: inhale
+It's possible to feel lucky, but it can also be helpful to recognize and acknowledge your hard work that has led to these positive outcomes. Let's try reframing this as a moment of success for you rather than just luck. How have you been able to create or contribute towards the things working out well in your life right now? This type of reflection can help build confidence and resilience when facing future challenges.
+<class 'str'>
+Sending done message
+Publishing
+Published: '{"msg": "Done!"}' to the topic: 'abhi-singh_mqtt/pub'
+Finished sending done message
+Playing sequence: exhale
+Published
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+So, let's take some time to identify these specific strengths that have led to your current success. Once we know what they are, we can work on strategies for coping with future challenges and building resilience based off of them. Can you think of a few examples?
+<class 'str'>
+Sending done message
+Publishing
+Published: '{"msg": "Done!"}' to the topic: 'abhi-singh_mqtt/pub'
+Finished sending done message
+Playing sequence: inhale
+Published
+Playing sequence: exhale
+Well, it's completely up to you. But the more we can identify your strengths and acknowledge them as coping strategies, the better position you may be in when facing future stressors or difficulties. It could potentially reduce feelings of anxiety or helplessness if we have a set of tools that work for us during challenging times. How do you feel about giving it a try?
+<class 'str'>
+Sending done message
+Publishing
+Published: '{"msg": "Done!"}' to the topic: 'abhi-singh_mqtt/pub'
+Finished sending done message
+Playing sequence: inhale
+Published
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Great, let's start with something simple. Can you think of a specific task or responsibility that has been going well for you recently?
+
+<class 'str'>
+Sending done message
+Publishing
+Published: '{"msg": "Done!"}' to the topic: 'abhi-singh_mqtt/pub'
+Finished sending done message
+Playing sequence: exhale
+Published
+Playing sequence: inhale
+Playing sequence: exhale
+Excellent. What has been working well with your project? Is it the planning, execution or perhaps collaboration and support from others?
+
+
+<class 'str'>
+Sending done message
+Publishing
+Published: '{"msg": "Done!"}' to the topic: 'abhi-singh_mqtt/pub'
+Finished sending done message
+Playing sequence: inhale
+Published
+That's great. Let's break it down even further - maybe we can identify one or two specific elements of your project that have been successful for you, and use them as a coping strategy in the future when faced with similar situations. Can you think of any particular strategies or approaches that have made this project a success so far?
+<class 'str'>
+Sending done message
+Publishing
+Published: '{"msg": "Done!"}' to the topic: 'abhi-singh_mqtt/pub'
+Finished sending done message
+Playing sequence: exhale
+Published
+That's great to hear. Do you think any specific planning or scheduling has helped it run more smoothly? Or maybe there have been certain people who have contributed significantly and provided support along the way? These are all important factors that we can identify as potential coping strategies for future challenges.
+<class 'str'>
+Sending done message
+Publishing
+Published: '{"msg": "Done!"}' to the topic: 'abhi-singh_mqtt/pub'
+Finished sending done message
+Playing sequence: inhale
+Published
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence: inhale
+Playing sequence: exhale
+Playing sequence:
