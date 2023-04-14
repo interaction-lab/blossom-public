@@ -310,7 +310,7 @@ mqtt_connection = mqtt_connection_builder.mtls_from_path(
             ca_filepath=PATH_TO_AMAZON_ROOT_CA_1,
             client_id=CLIENT_ID+"35",
             clean_session=False,
-            keep_alive_secs=100
+            keep_alive_secs=600
             )
 mqtt_connection_pub = mqtt_connection_builder.mtls_from_path(
             endpoint=ENDPOINT,
@@ -320,7 +320,7 @@ mqtt_connection_pub = mqtt_connection_builder.mtls_from_path(
             ca_filepath=PATH_TO_AMAZON_ROOT_CA_1,
             client_id=CLIENT_ID+"15",
             clean_session=False,
-            keep_alive_secs=100,
+            keep_alive_secs=600,
             on_connection_interrupted=printConnectionInterrupted,
             on_connection_resumed=printConnectionResumed
             )  
