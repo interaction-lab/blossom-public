@@ -3,6 +3,9 @@
 This python package includes all the basics necessary to run your
 Blossom robot to make it perform various gestures and sequences.
 
+# Resources
+Find the **Build Guide** and **Wiring Guide** for Blossom on the [OpenHMI Github Page](https://github.com/interaction-lab/OpenHMI).
+
 ## About Blossom
 
 Blossom is an open-hardware, open-source tensile robot that you can handcraft and accessorize to your liking. You can read more about the project in [Evan Ackerman's IEEE Spectrum article](https://spectrum.ieee.org/automaton/robotics/home-robots/blossom-a-creative-handmade-approach-to-social-robotics-from-cornell-and-google).
